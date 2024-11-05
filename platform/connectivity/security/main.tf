@@ -175,10 +175,14 @@ resource "azurerm_subnet_route_table_association" "firewall_management_subnet" {
 
 
 # For Connectivity Subnets
+# Associate Route Tables to Subnets, excluding AzureFirewallManagementSubnet and AzureFirewallSubnet
 resource "azurerm_subnet_route_table_association" "connectivity_subnets" {
-  provider       = azurerm.connectivity
-  for_each       = { for key, value in var.connectivity_subnet_ids : key => value if !contains(["AzureFirewallSubnet", "AzureFirewallManagementSubnet"], value.name) }
-  subnet_id      = each.value.id
+  provider = azurerm.connectivity
+  for_each = {
+    for k, v in var.connectivity_subnet_ids :
+    k => v if k != "AzureFirewallManagementSubnet" && k != "AzureFirewallSubnet"
+  }
+  subnet_id      = each.value
   route_table_id = azurerm_route_table.connectivity_route_table.id
 }
 
