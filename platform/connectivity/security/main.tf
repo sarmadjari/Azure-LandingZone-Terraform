@@ -150,19 +150,26 @@ resource "azurerm_route_table" "management_route_table" {
 }
 
 # Associate Route Tables to Subnets
+
+# For Connectivity Subnets
 resource "azurerm_subnet_route_table_association" "connectivity_subnets" {
+  provider       = azurerm.connectivity
   for_each       = var.connectivity_subnet_ids
   subnet_id      = each.value
   route_table_id = azurerm_route_table.connectivity_route_table.id
 }
 
+# For Identity Subnets
 resource "azurerm_subnet_route_table_association" "identity_subnets" {
+  provider       = azurerm.identity
   for_each       = var.identity_subnet_ids
   subnet_id      = each.value
   route_table_id = azurerm_route_table.identity_route_table.id
 }
 
+# For Management Subnets
 resource "azurerm_subnet_route_table_association" "management_subnets" {
+  provider       = azurerm.management
   for_each       = var.management_subnet_ids
   subnet_id      = each.value
   route_table_id = azurerm_route_table.management_route_table.id
