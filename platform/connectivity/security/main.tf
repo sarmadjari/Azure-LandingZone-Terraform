@@ -53,6 +53,21 @@ resource "azurerm_firewall" "internal_firewall" {
 
 
 # Route Table for East-West and Forced Tunneling
+# Create a route table for AzureFirewallManagementSubnet with default route to Internet
+resource "azurerm_route_table" "firewall_management_route_table" {
+  provider            = azurerm.connectivity
+  name                = "firewall-management-udr"
+  location            = var.location
+  resource_group_name = var.connectivity_resource_group_name
+  tags                = merge(var.shared_tags, { project = "connectivity" })
+
+  route {
+    name                   = "default-route"
+    address_prefix         = "0.0.0.0/0"
+    next_hop_type          = "Internet"
+  }
+}
+
 # UDR for Connectivity VNet
 resource "azurerm_route_table" "connectivity_route_table" {
   provider            = azurerm.connectivity
@@ -150,6 +165,14 @@ resource "azurerm_route_table" "management_route_table" {
 }
 
 # Associate Route Tables to Subnets
+
+# Associate the firewall management route table with AzureFirewallManagementSubnet
+resource "azurerm_subnet_route_table_association" "firewall_management_subnet" {
+  provider       = azurerm.connectivity
+  subnet_id      = var.connectivity_subnet_ids["AzureFirewallManagementSubnet"]
+  route_table_id = azurerm_route_table.firewall_management_route_table.id
+}
+
 
 # For Connectivity Subnets
 resource "azurerm_subnet_route_table_association" "connectivity_subnets" {
