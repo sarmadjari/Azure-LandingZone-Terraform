@@ -154,10 +154,11 @@ resource "azurerm_route_table" "management_route_table" {
 # For Connectivity Subnets
 resource "azurerm_subnet_route_table_association" "connectivity_subnets" {
   provider       = azurerm.connectivity
-  for_each       = var.connectivity_subnet_ids
-  subnet_id      = each.value
+  for_each       = { for key, value in var.connectivity_subnet_ids : key => value if !contains(["AzureFirewallSubnet", "AzureFirewallManagementSubnet"], value.name) }
+  subnet_id      = each.value.id
   route_table_id = azurerm_route_table.connectivity_route_table.id
 }
+
 
 # For Identity Subnets
 resource "azurerm_subnet_route_table_association" "identity_subnets" {
