@@ -51,6 +51,7 @@ resource "azurerm_firewall" "internal_firewall" {
   tags = var.tags
 }
 
+
 # Route Table for East-West and Forced Tunneling
 # UDR for Connectivity VNet
 resource "azurerm_route_table" "connectivity_route_table" {
@@ -63,22 +64,24 @@ resource "azurerm_route_table" "connectivity_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
+
+  depends_on = [azurerm_firewall.internal_firewall]
 }
 
 # UDR for Identity VNet
@@ -92,22 +95,24 @@ resource "azurerm_route_table" "identity_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
+
+  depends_on = [azurerm_firewall.internal_firewall]
 }
 
 # UDR for Management VNet
@@ -121,39 +126,42 @@ resource "azurerm_route_table" "management_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = module.connectivity_security.internal_firewall_ip
+    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
   }
+
+  depends_on = [azurerm_firewall.internal_firewall]
 }
 
 # Associate Route Tables to Subnets
 resource "azurerm_subnet_route_table_association" "connectivity_subnets" {
-  for_each            = toset(module.connectivity_network.subnet_ids)
-  subnet_id           = each.value
-  route_table_id      = azurerm_route_table.connectivity_route_table.id
+  for_each       = var.connectivity_subnet_ids
+  subnet_id      = each.value
+  route_table_id = azurerm_route_table.connectivity_route_table.id
 }
 
 resource "azurerm_subnet_route_table_association" "identity_subnets" {
-  for_each            = toset(module.identity_network.subnet_ids)
-  subnet_id           = each.value
-  route_table_id      = azurerm_route_table.identity_route_table.id
+  for_each       = var.identity_subnet_ids
+  subnet_id      = each.value
+  route_table_id = azurerm_route_table.identity_route_table.id
 }
 
 resource "azurerm_subnet_route_table_association" "management_subnets" {
-  for_each            = toset(module.management_network.subnet_ids)
-  subnet_id           = each.value
-  route_table_id      = azurerm_route_table.management_route_table.id
+  for_each       = var.management_subnet_ids
+  subnet_id      = each.value
+  route_table_id = azurerm_route_table.management_route_table.id
 }
+

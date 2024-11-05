@@ -79,8 +79,15 @@ module "connectivity_security" {
   management_vnet_address_space     = var.management_vnet_address_space
   shared_tags                       = var.shared_tags
 
-  # Subnet IDs
-  subnet_ids          = module.connectivity_network.subnet_ids
+  # Pass Subnet IDs as Input Variables
+  subnet_ids              = module.connectivity_network.subnet_ids
+  connectivity_subnet_ids = module.connectivity_network.subnet_ids
+  identity_subnet_ids     = module.identity_network.subnet_ids
+  management_subnet_ids   = module.management_network.subnet_ids
 
-  depends_on = [module.connectivity_network]
+  depends_on = [
+    module.connectivity_network,
+    module.identity_network,
+    module.management_network
+  ]
 }

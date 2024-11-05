@@ -77,3 +77,18 @@ variable "shared_tags" {
   type        = map(string)
 }
 
+variable "connectivity_subnet_ids" {
+  type        = map(string)
+  description = "Map of subnet IDs for the connectivity network"
+}
+
+variable "identity_subnet_ids" {
+  type        = map(string)
+  description = "Map of subnet IDs for the identity network"
+}
+
+variable "management_subnet_ids" {
+  type        = map(string)
+  description = "Map of subnet IDs for the management network"
+}
+

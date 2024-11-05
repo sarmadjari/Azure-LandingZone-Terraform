@@ -7,3 +7,6 @@ output "internal_firewall_id" {
   value       = azurerm_firewall.internal_firewall.id
 }
 
+output "internal_firewall_ip" {
+  value = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+}
