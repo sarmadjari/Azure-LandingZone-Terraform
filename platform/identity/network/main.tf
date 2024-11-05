@@ -26,6 +26,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = var.resource_group_name
   address_space       = var.address_space
   tags                = var.tags
+  depends_on          = [azurerm_resource_group.identity_rg]
 }
 
 # Create Subnets within the VNet dynamically based on the subnets variable
