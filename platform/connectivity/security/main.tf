@@ -57,6 +57,7 @@ resource "azurerm_firewall" "internal_firewall" {
 resource "azurerm_route_table" "firewall_management_route_table" {
   provider            = azurerm.connectivity
   name                = "firewall-management-udr"
+  bgp_route_propagation_enabled = false
   location            = var.location
   resource_group_name = var.connectivity_resource_group_name
   tags                = merge(var.shared_tags, { project = "connectivity" })
