@@ -55,6 +55,7 @@ resource "azurerm_firewall" "internal_firewall" {
 # Route Table for East-West and Forced Tunneling
 # UDR for Connectivity VNet
 resource "azurerm_route_table" "connectivity_route_table" {
+  provider            = azurerm.connectivity
   name                = "connectivity-udr"
   location            = var.location
   resource_group_name = var.connectivity_resource_group_name
@@ -86,6 +87,7 @@ resource "azurerm_route_table" "connectivity_route_table" {
 
 # UDR for Identity VNet
 resource "azurerm_route_table" "identity_route_table" {
+  provider            = azurerm.identity
   name                = "identity-udr"
   location            = var.location
   resource_group_name = var.identity_resource_group_name
@@ -117,6 +119,7 @@ resource "azurerm_route_table" "identity_route_table" {
 
 # UDR for Management VNet
 resource "azurerm_route_table" "management_route_table" {
+  provider            = azurerm.management
   name                = "management-udr"
   location            = var.location
   resource_group_name = var.management_resource_group_name
