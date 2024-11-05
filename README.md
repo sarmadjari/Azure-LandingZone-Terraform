@@ -2,6 +2,8 @@
 
 This Terraform template sets up a multi-tier network architecture in Azure, including connectivity, identity, and management virtual networks (VNets). The template is organized into several modules, each responsible for different aspects of the infrastructure.
 
+This template was built based on the official Microsoft documentation from the [Cloud Adoption Framework Landing Zone](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
+
 ## Modules
 
 ### Connectivity Network
@@ -32,22 +34,3 @@ The management network module creates the management VNet and its associated sub
 The connectivity security module sets up the Azure Firewall and its associated route tables for east-west and forced tunneling traffic.
 
 - **Location**: `platform/connectivity/security`
-- **Main Configuration**: [platform/connectivity/security/main.tf](platform/connectivity/security/main.tf)
-- **Variables**: [platform/connectivity/security/variables.tf](platform/connectivity/security/variables.tf)
-- **Outputs**: [platform/connectivity/security/outputs.tf](platform/connectivity/security/outputs.tf)
-
-## Root Configuration
-The root configuration ties all the modules together and provides the necessary variables and outputs for the entire infrastructure.
-
-- **Location**: `platform`
-- **Main Configuration**: [platform/main.tf](platform/main.tf)
-- **Variables**: [platform/variables.tf](platform/variables.tf)
-- **Outputs**: [platform/outputs.tf](platform/outputs.tf)
-- **Providers**: [platform/providers.tf](platform/providers.tf)
-- **Terraform Variables**: [platform/terraform.tfvars](platform/terraform.tfvars)
-
-## Usage
-1. Clone the repository.
-2. Navigate to the `platform` directory.
-3. Initialize Terraform:
-
