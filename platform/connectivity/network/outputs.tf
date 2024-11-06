@@ -20,6 +20,12 @@ output "subnet_names" {
   value       = { for k, v in azurerm_subnet.subnet : k => v.name }
 }
 
+output "subnet_ids_by_name" {
+  description = "A map of subnet names to their respective IDs for the Connectivity VNet"
+  value       = { for k, v in azurerm_subnet.subnet : v.name => v.id }
+}
+
+
 output "firewall_management_subnet_id" {
   description = "The ID of the Azure Firewall Management subnet"
   value       = azurerm_subnet.subnet["AzureFirewallManagementSubnet"].id

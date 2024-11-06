@@ -91,3 +91,29 @@ module "connectivity_security" {
     module.management_network
   ]
 }
+
+
+# FotiGate Module
+module "connectivity_fortigate" {
+  source              = "./connectivity/fortigate"
+  providers           = {
+    azurerm.connectivity = azurerm.connectivity
+  }
+  location            = var.location
+  resource_group_name = var.connectivity_resource_group_name
+  tags                = merge(var.shared_tags, { project = "connectivity" })
+
+  fortigate_prefix_name          = var.fortigate_prefix_name
+  fortigate_vm_size              = var.fortigate_vm_size
+  fortigate_admin_username       = var.fortigate_admin_username
+  fortigate_admin_password       = var.fortigate_admin_password
+
+
+  fortigate_external_subnet_id     = module.connectivity_network.subnet_ids_by_name["fortigate-external-subnet"]
+  fortigate_internal_subnet_id     = module.connectivity_network.subnet_ids_by_name["fortigate-internal-subnet"]
+  connectivity_management_subnet_id = module.connectivity_network.subnet_ids_by_name["connectivity-management-subnet"]
+
+  depends_on = [
+    module.connectivity_network,
+  ]
+}

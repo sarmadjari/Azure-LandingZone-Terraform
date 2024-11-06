@@ -118,3 +118,29 @@ variable "sku_tier" {
   type        = string
   default     = "Standard"
 }
+
+#Fortigate Variables
+variable "fortigate_prefix_name" {
+  description = "The prefix name for the Fortigate resources"
+  type        = string
+}
+
+variable "fortigate_vm_size" {
+  description = "The instance type for the Fortigate VM"
+  type        = string
+  default     = "Standard_F4s"
+}
+
+variable "fortigate_admin_username" {
+  description = "The admin username for the Fortigate VM"
+  type        = string
+}
+
+variable "fortigate_admin_password" {
+  description = "The admin password for the Fortigate VM"
+  type        = string
+  sensitive   = true
+}
+
+
+
