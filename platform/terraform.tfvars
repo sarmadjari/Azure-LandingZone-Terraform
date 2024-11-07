@@ -58,5 +58,6 @@ sku_tier      = "Premium"
 #Fortigate Configuration
 fortigate_prefix_name      = "fortigate"
 fortigate_vm_size          = "Standard_F2"
+fortigate_count            = 2
 fortigate_admin_username   = "fortigateadmin"
 fortigate_admin_password   = "P@ss0rd1234"

@@ -131,6 +131,12 @@ variable "fortigate_vm_size" {
   default     = "Standard_F4s"
 }
 
+variable "fortigate_count" {
+  description = "The number of Fortigate appliances to create."
+  type        = number
+  default     = 2
+}
+
 variable "fortigate_admin_username" {
   description = "The admin username for the Fortigate VM"
   type        = string

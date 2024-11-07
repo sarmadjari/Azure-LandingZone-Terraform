@@ -19,7 +19,18 @@ variable "tags" {
 variable "fortigate_prefix_name" {
   description = "The prefix name for the Fortigate resources"
   type        = string
-  
+}
+
+variable "fortigate_count" {
+  description = "The number of Fortigate appliances to create."
+  type        = number
+  default     = 1
+}
+
+variable "available_zones" {
+  description = "List of availability zones to cycle through for VM deployment."
+  type        = list(string)
+  default     = ["1", "2", "3"]
 }
 
 variable "fortigate_vm_size" {
@@ -31,7 +42,6 @@ variable "fortigate_vm_size" {
 variable "fortigate_admin_username" {
   description = "The admin username for the Fortigate VM"
   type        = string
-  
 }
 
 variable "fortigate_admin_password" {
@@ -40,13 +50,17 @@ variable "fortigate_admin_password" {
   sensitive   = true
 }
 
-
 variable "fortigate_external_subnet_id" {
   description = "The ID of the external subnet for the Fortigate NIC"
   type        = string
 }
 
 variable "fortigate_internal_subnet_id" {
+  description = "The ID of the internal subnet for the Fortigate NIC"
+  type        = string
+}
+
+variable "fortigate_ha_sync_subnet_id" {
   description = "The ID of the internal subnet for the Fortigate NIC"
   type        = string
 }
