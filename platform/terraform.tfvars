@@ -32,7 +32,6 @@ connectivity_subnets = [
   { name = "connectivity-management-subnet", address_prefix = "10.0.100.0/24" },
   { name = "AzureFirewallSubnet", address_prefix = "10.0.10.0/24" },
   { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.11.0/24" },
-  { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.11.0/24" },
   { name = "ApplicationGatewaySubnet", address_prefix = "10.0.2.0/24" },
   #{ name = "fortigate-external-subnet", address_prefix = "10.0.1.0/26" },       # 64 (59 Usable)  addresses for External   (10.0.1.4 - 10.0.1.62)
   #{ name = "fortigate-internal-subnet", address_prefix = "10.0.1.64/26" },      # 64 (59 Usable)  addresses for Internal   (10.0.1.68 - 10.0.1.126)
@@ -53,9 +52,9 @@ management_subnets = [
 ]
 
 # Azure Firewall Configuration
-firewall_name = "internal-firewall"  # Define the desired name for the Azure Firewall here
-sku_name      = "AZFW_VNet"
-sku_tier      = "Premium"
+azure_firewall_name = "internal-firewall"  # Define the desired name for the Azure Firewall here
+azure_sku_name      = "AZFW_VNet"
+azure_sku_tier      = "Premium"
 
 appgw_name                 = "app-gateway"
 appgw_private_ip_address   = "10.0.2.4"  # Ensure this IP is within the application-gateway-subnet

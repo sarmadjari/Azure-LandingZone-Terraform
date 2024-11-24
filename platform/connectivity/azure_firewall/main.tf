@@ -13,9 +13,9 @@ terraform {
 }
 
 # Public IP for Firewall Management
-resource "azurerm_public_ip" "firewall_management_public_ip" {
+resource "azurerm_public_ip" "azure_firewall_management_public_ip" {
   provider            = azurerm.connectivity
-  name                = "${var.firewall_name}-mgmt-pip"
+  name                = "${var.azure_firewall_name}-mgmt-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
@@ -25,24 +25,24 @@ resource "azurerm_public_ip" "firewall_management_public_ip" {
 }
 
 # Azure Firewall
-resource "azurerm_firewall" "internal_firewall" {
+resource "azurerm_firewall" "azure_firewall" {
   provider            = azurerm.connectivity
-  name                = var.firewall_name
+  name                = var.azure_firewall_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  sku_name            = var.sku_name
-  sku_tier            = var.sku_tier
+  sku_name            = var.azure_sku_name
+  sku_tier            = var.azure_sku_tier
   zones               = ["1", "2", "3"]
 
   ip_configuration {
-    name      = "internalFirewallConfig"
+    name      = "azureFirewallConfig"
     subnet_id = var.subnet_ids["AzureFirewallSubnet"]
   }
 
   management_ip_configuration {
-    name                 = "mgmtFirewallConfig"
+    name                 = "azureMgmtFirewallConfig"
     subnet_id            = var.subnet_ids["AzureFirewallManagementSubnet"]
-    public_ip_address_id = azurerm_public_ip.firewall_management_public_ip.id
+    public_ip_address_id = azurerm_public_ip.azure_firewall_management_public_ip.id
   }
 
   tags = var.tags

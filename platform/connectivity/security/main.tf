@@ -45,21 +45,21 @@ resource "azurerm_route_table" "connectivity_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 }
 
@@ -75,21 +75,21 @@ resource "azurerm_route_table" "identity_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 }
 
@@ -105,21 +105,21 @@ resource "azurerm_route_table" "management_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.firewall_private_ip
+    next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 }
 

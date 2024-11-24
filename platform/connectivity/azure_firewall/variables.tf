@@ -1,6 +1,6 @@
 # /platform/connectivity/azure_firewall/variables.tf
 
-variable "firewall_name" {
+variable "azure_firewall_name" {
   description = "Name of the Azure Firewall"
   type        = string
 }
@@ -15,12 +15,12 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "sku_name" {
+variable "azure_sku_name" {
   description = "SKU name for the Azure Firewall"
   type        = string
 }
 
-variable "sku_tier" {
+variable "azure_sku_tier" {
   description = "SKU tier for the Azure Firewall"
   type        = string
 }

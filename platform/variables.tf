@@ -102,32 +102,21 @@ variable "management_subnets" {
 }
 
 # Firewall-specific Variables
-variable "firewall_name" {
+variable "azure_firewall_name" {
   description = "The name of the Azure Firewall"
   type        = string
 }
 
-variable "sku_name" {
+variable "azure_sku_name" {
   description = "Firewall SKU Name"
   type        = string
   default     = "AZFW_VNet"
 }
 
-variable "sku_tier" {
+variable "azure_sku_tier" {
   description = "Firewall SKU Tier"
   type        = string
   default     = "Standard"
-}
-
-variable "firewall_private_ip" {
-  description = "Private IP address of the Azure Firewall"
-  type        = string
-}
-
-variable "firewall_id" {
-  description = "ID of the Azure Firewall"
-  type        = string
-  
 }
 
 # Application Gateway Variables

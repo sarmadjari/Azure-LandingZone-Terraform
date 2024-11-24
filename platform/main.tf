@@ -1,6 +1,6 @@
 # /platform/main.tf
 
-# Connectivity Network
+# Connectivity Network Module
 module "connectivity_network" {
   source              = "./connectivity/network"
   providers = {
@@ -15,7 +15,6 @@ module "connectivity_network" {
   subnets             = var.connectivity_subnets
   tags                = merge(var.shared_tags, { project = "connectivity" })
 
-  # Use outputs from management and identity modules
   management_vnet_name    = module.management_network.vnet_name
   management_vnet_id      = module.management_network.vnet_id
   management_vnet_rg_name = var.management_resource_group_name
@@ -53,30 +52,25 @@ module "management_network" {
   tags                = merge(var.shared_tags, { project = "management" })
 }
 
-
 # Connectivity Azure Firewall Module
 module "connectivity_azure_firewall" {
   source              = "./connectivity/azure_firewall"
-  providers           = {
+  providers = {
     azurerm.connectivity = azurerm.connectivity
   }
-  firewall_name       = var.firewall_name
-  sku_name            = var.sku_name
-  sku_tier            = var.sku_tier
+  azure_firewall_name = var.azure_firewall_name
+  azure_sku_name      = var.azure_sku_name
+  azure_sku_tier      = var.azure_sku_tier
   location            = var.location
   resource_group_name = var.connectivity_resource_group_name
   tags                = merge(var.shared_tags, { project = "connectivity" })
   subnet_ids          = module.connectivity_network.subnet_ids
 
-  depends_on = [
-    module.connectivity_network
-  ]
+  depends_on = [module.connectivity_network]
 }
 
-
-
-# Application Gateway Module
-module "connectivity_application_gateway" {
+# Connectivity Application Gateway Module
+module "connectivity_azure_application_gateway" {
   source = "./connectivity/azure_application_gateway"
   providers = {
     azurerm.connectivity = azurerm.connectivity
@@ -84,17 +78,18 @@ module "connectivity_application_gateway" {
   appgw_name                = var.appgw_name
   location                  = var.location
   resource_group_name       = var.connectivity_resource_group_name
-  subnet_id                 = module.connectivity_network.subnet_ids["application-gateway-subnet"]
+  subnet_id                 = module.connectivity_network.subnet_ids["ApplicationGatewaySubnet"]
   private_ip_address        = var.appgw_private_ip_address
   waf_mode                  = var.waf_mode
   waf_rule_set_version      = var.waf_rule_set_version
   tags                      = merge(var.shared_tags, { project = "connectivity" })
-  depends_on                = [module.connectivity_network, module.connectivity_security]
+  depends_on                = [module.connectivity_network]
 }
 
+# Connectivity Security Module
 module "connectivity_security" {
   source              = "./connectivity/security"
-  providers           = {
+  providers = {
     azurerm.connectivity = azurerm.connectivity
     azurerm.identity     = azurerm.identity
     azurerm.management   = azurerm.management
@@ -110,8 +105,7 @@ module "connectivity_security" {
   management_subnet_ids               = module.management_network.subnet_ids
 
   # Pass Firewall Outputs
-  firewall_private_ip                 = module.connectivity_azure_firewall.firewall_private_ip
-  firewall_id                         = module.connectivity_azure_firewall.firewall_id
+  azure_firewall_private_ip                 = module.connectivity_azure_firewall.azure_firewall_private_ip
 
   management_resource_group_name      = var.management_resource_group_name
   identity_resource_group_name        = var.identity_resource_group_name
@@ -120,9 +114,7 @@ module "connectivity_security" {
     module.connectivity_network,
     module.identity_network,
     module.management_network,
-    module.connectivity_azure_firewall
+    module.connectivity_azure_firewall,
+    module.connectivity_azure_application_gateway
   ]
 }
-
-
-

@@ -55,13 +55,8 @@ variable "management_subnet_ids" {
   type        = map(string)
 }
 
-variable "firewall_private_ip" {
+variable "azure_firewall_private_ip" {
   description = "Private IP address of the Azure Firewall"
-  type        = string
-}
-
-variable "firewall_id" {
-  description = "ID of the Azure Firewall"
   type        = string
 }
 
