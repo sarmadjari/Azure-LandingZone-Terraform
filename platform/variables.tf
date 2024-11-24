@@ -101,7 +101,7 @@ variable "management_subnets" {
   }))
 }
 
-# Firewall-specific Variables
+# Azure Firewall Variables
 variable "azure_firewall_name" {
   description = "The name of the Azure Firewall"
   type        = string
@@ -119,7 +119,7 @@ variable "azure_sku_tier" {
   default     = "Standard"
 }
 
-# Application Gateway Variables
+# Azure Application Gateway Variables
 variable "appgw_name" {
   description = "Name of the Application Gateway"
   type        = string
@@ -154,4 +154,26 @@ variable "ssl_certificate_password" {
   description = "Password for the PFX SSL certificate"
   type        = string
   default     = ""  # Provide the password if HTTPS is required
+}
+
+
+# Azure API Managemnet Variables
+variable "api_management_name" {
+  description = "Name of the Azure API Management instance"
+  type        = string
+}
+
+variable "api_management_sku" {
+  description = "SKU for Azure API Management (e.g., Developer, Standard, Premium)"
+  type        = string
+}
+
+variable "api_management_publisher_name" {
+  description = "Name of the publisher for Azure API Management instance"
+  type        = string
+}
+
+variable "api_management_publisher_email" {
+  description = "Email of the publisher for Azure API Management instance"
+  type        = string
 }

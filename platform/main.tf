@@ -86,6 +86,26 @@ module "connectivity_azure_application_gateway" {
   depends_on                = [module.connectivity_network]
 }
 
+
+# Connectivity API Management Module
+module "api_management" {
+  source              = "./connectivity/azure_api_management"
+  providers = {
+    azurerm.connectivity = azurerm.connectivity
+  }
+  api_management_name = var.api_management_name
+  location            = var.location
+  resource_group_name = var.connectivity_resource_group_name
+  sku_name            = var.api_management_sku
+  subnet_id           = module.connectivity_network.subnet_ids["APIManagementSubnet"]
+  publisher_name      = var.api_management_publisher_name
+  publisher_email     = var.api_management_publisher_email
+  tags                = merge(var.shared_tags, { project = "connectivity" })
+  depends_on                = [module.connectivity_network]
+}
+
+
+
 # Connectivity Security Module
 module "connectivity_security" {
   source              = "./connectivity/security"
