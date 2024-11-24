@@ -119,34 +119,50 @@ variable "sku_tier" {
   default     = "Standard"
 }
 
-#Fortigate Variables
-variable "fortigate_prefix_name" {
-  description = "The prefix name for the Fortigate resources"
+variable "firewall_private_ip" {
+  description = "Private IP address of the Azure Firewall"
   type        = string
 }
 
-variable "fortigate_vm_size" {
-  description = "The instance type for the Fortigate VM"
+variable "firewall_id" {
+  description = "ID of the Azure Firewall"
   type        = string
-  default     = "Standard_F4s"
+  
 }
 
-variable "fortigate_count" {
-  description = "The number of Fortigate appliances to create."
-  type        = number
-  default     = 2
-}
-
-variable "fortigate_admin_username" {
-  description = "The admin username for the Fortigate VM"
+# Application Gateway Variables
+variable "appgw_name" {
+  description = "Name of the Application Gateway"
   type        = string
+  default     = "appgw-dev"
 }
 
-variable "fortigate_admin_password" {
-  description = "The admin password for the Fortigate VM"
+variable "appgw_private_ip_address" {
+  description = "Private IP address for the Application Gateway"
   type        = string
-  sensitive   = true
+  default     = "10.0.2.4"  # Ensure this IP is within the application-gateway-subnet
 }
 
+variable "waf_mode" {
+  description = "WAF mode: Detection or Prevention"
+  type        = string
+  default     = "Prevention"
+}
 
+variable "waf_rule_set_version" {
+  description = "WAF rule set version"
+  type        = string
+  default     = "3.2"
+}
 
+variable "ssl_certificate_path" {
+  description = "Path to the PFX file for SSL certificate"
+  type        = string
+  default     = ""  # Provide the path if HTTPS is required
+}
+
+variable "ssl_certificate_password" {
+  description = "Password for the PFX SSL certificate"
+  type        = string
+  default     = ""  # Provide the password if HTTPS is required
+}

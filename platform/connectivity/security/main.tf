@@ -15,42 +15,6 @@ terraform {
   }
 }
 
-# Public IP for Firewall Management
-resource "azurerm_public_ip" "firewall_management_public_ip" {
-  provider            = azurerm.connectivity
-  name                = "${var.firewall_name}-mgmt-pip"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-  zones               = ["1", "2", "3"]
-  tags = var.tags
-}
-
-# Azure Firewall
-resource "azurerm_firewall" "internal_firewall" {
-  provider            = azurerm.connectivity
-  name                = var.firewall_name
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  sku_name            = var.sku_name
-  sku_tier            = var.sku_tier
-  zones               = ["1", "2", "3"]
-
-  ip_configuration {
-    name      = "internalFirewallConfig"
-    subnet_id = var.subnet_ids["AzureFirewallSubnet"]
-  }
-
-  management_ip_configuration {
-    name                 = "mgmtFirewallConfig"
-    subnet_id            = var.subnet_ids["AzureFirewallManagementSubnet"]
-    public_ip_address_id = azurerm_public_ip.firewall_management_public_ip.id
-  }
-
-  tags = var.tags
-}
-
 
 # Route Table for East-West and Forced Tunneling
 # Create a route table for AzureFirewallManagementSubnet with default route to Internet
@@ -81,24 +45,22 @@ resource "azurerm_route_table" "connectivity_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
-
-  depends_on = [azurerm_firewall.internal_firewall]
 }
 
 # UDR for Identity VNet
@@ -113,24 +75,22 @@ resource "azurerm_route_table" "identity_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
-
-  depends_on = [azurerm_firewall.internal_firewall]
 }
 
 # UDR for Management VNet
@@ -145,24 +105,22 @@ resource "azurerm_route_table" "management_route_table" {
     name                   = "to-firewall-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = azurerm_firewall.internal_firewall.ip_configuration[0].private_ip_address
+    next_hop_in_ip_address = var.firewall_private_ip
   }
-
-  depends_on = [azurerm_firewall.internal_firewall]
 }
 
 # Associate Route Tables to Subnets

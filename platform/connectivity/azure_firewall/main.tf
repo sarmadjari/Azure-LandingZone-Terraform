@@ -1,0 +1,49 @@
+# /platform/connectivity/azure_firewall/main.tf
+
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "4.6.0"
+      configuration_aliases = [
+        azurerm.connectivity
+      ]
+    }
+  }
+}
+
+# Public IP for Firewall Management
+resource "azurerm_public_ip" "firewall_management_public_ip" {
+  provider            = azurerm.connectivity
+  name                = "${var.firewall_name}-mgmt-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  zones               = ["1", "2", "3"]
+  tags                = var.tags
+}
+
+# Azure Firewall
+resource "azurerm_firewall" "internal_firewall" {
+  provider            = azurerm.connectivity
+  name                = var.firewall_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  sku_name            = var.sku_name
+  sku_tier            = var.sku_tier
+  zones               = ["1", "2", "3"]
+
+  ip_configuration {
+    name      = "internalFirewallConfig"
+    subnet_id = var.subnet_ids["AzureFirewallSubnet"]
+  }
+
+  management_ip_configuration {
+    name                 = "mgmtFirewallConfig"
+    subnet_id            = var.subnet_ids["AzureFirewallManagementSubnet"]
+    public_ip_address_id = azurerm_public_ip.firewall_management_public_ip.id
+  }
+
+  tags = var.tags
+}

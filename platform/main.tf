@@ -53,13 +53,12 @@ module "management_network" {
   tags                = merge(var.shared_tags, { project = "management" })
 }
 
-# Connectivity Security Module
-module "connectivity_security" {
-  source              = "./connectivity/security"
+
+# Connectivity Azure Firewall Module
+module "connectivity_azure_firewall" {
+  source              = "./connectivity/azure_firewall"
   providers           = {
     azurerm.connectivity = azurerm.connectivity
-    azurerm.identity     = azurerm.identity
-    azurerm.management   = azurerm.management
   }
   firewall_name       = var.firewall_name
   sku_name            = var.sku_name
@@ -67,55 +66,63 @@ module "connectivity_security" {
   location            = var.location
   resource_group_name = var.connectivity_resource_group_name
   tags                = merge(var.shared_tags, { project = "connectivity" })
+  subnet_ids          = module.connectivity_network.subnet_ids
 
-  # Network Address Spaces
-  connectivity_resource_group_name  = var.connectivity_resource_group_name
-  connectivity_vnet_address_space   = var.connectivity_vnet_address_space
+  depends_on = [
+    module.connectivity_network
+  ]
+}
 
-  identity_resource_group_name      = var.identity_resource_group_name
-  identity_vnet_address_space       = var.identity_vnet_address_space
 
-  management_resource_group_name    = var.management_resource_group_name
-  management_vnet_address_space     = var.management_vnet_address_space
-  shared_tags                       = var.shared_tags
 
-  # Pass Subnet IDs as Input Variables
-  subnet_ids              = module.connectivity_network.subnet_ids
-  connectivity_subnet_ids = module.connectivity_network.subnet_ids
-  identity_subnet_ids     = module.identity_network.subnet_ids
-  management_subnet_ids   = module.management_network.subnet_ids
+# Application Gateway Module
+module "connectivity_application_gateway" {
+  source = "./connectivity/azure_application_gateway"
+  providers = {
+    azurerm.connectivity = azurerm.connectivity
+  }
+  appgw_name                = var.appgw_name
+  location                  = var.location
+  resource_group_name       = var.connectivity_resource_group_name
+  subnet_id                 = module.connectivity_network.subnet_ids["application-gateway-subnet"]
+  private_ip_address        = var.appgw_private_ip_address
+  waf_mode                  = var.waf_mode
+  waf_rule_set_version      = var.waf_rule_set_version
+  tags                      = merge(var.shared_tags, { project = "connectivity" })
+  depends_on                = [module.connectivity_network, module.connectivity_security]
+}
+
+module "connectivity_security" {
+  source              = "./connectivity/security"
+  providers           = {
+    azurerm.connectivity = azurerm.connectivity
+    azurerm.identity     = azurerm.identity
+    azurerm.management   = azurerm.management
+  }
+  location                            = var.location
+  connectivity_resource_group_name    = var.connectivity_resource_group_name
+  connectivity_vnet_address_space     = var.connectivity_vnet_address_space
+  identity_vnet_address_space         = var.identity_vnet_address_space
+  management_vnet_address_space       = var.management_vnet_address_space
+  shared_tags                         = var.shared_tags
+  connectivity_subnet_ids             = module.connectivity_network.subnet_ids
+  identity_subnet_ids                 = module.identity_network.subnet_ids
+  management_subnet_ids               = module.management_network.subnet_ids
+
+  # Pass Firewall Outputs
+  firewall_private_ip                 = module.connectivity_azure_firewall.firewall_private_ip
+  firewall_id                         = module.connectivity_azure_firewall.firewall_id
+
+  management_resource_group_name      = var.management_resource_group_name
+  identity_resource_group_name        = var.identity_resource_group_name
 
   depends_on = [
     module.connectivity_network,
     module.identity_network,
-    module.management_network
+    module.management_network,
+    module.connectivity_azure_firewall
   ]
 }
 
 
-# FotiGate Module
-module "connectivity_fortigate" {
-  source              = "./connectivity/fortigate"
-  providers           = {
-    azurerm.connectivity = azurerm.connectivity
-  }
-  location            = var.location
-  resource_group_name = var.connectivity_resource_group_name
-  tags                = merge(var.shared_tags, { project = "connectivity" })
 
-  fortigate_prefix_name          = var.fortigate_prefix_name
-  fortigate_vm_size              = var.fortigate_vm_size
-  fortigate_count                = var.fortigate_count
-  fortigate_admin_username       = var.fortigate_admin_username
-  fortigate_admin_password       = var.fortigate_admin_password
-
-
-  fortigate_external_subnet_id      = module.connectivity_network.subnet_ids_by_name["fortigate-external-subnet"]
-  fortigate_internal_subnet_id      = module.connectivity_network.subnet_ids_by_name["fortigate-internal-subnet"]
-  fortigate_ha_sync_subnet_id       = module.connectivity_network.subnet_ids_by_name["fortigate-ha-sync-subnet"]
-  connectivity_management_subnet_id = module.connectivity_network.subnet_ids_by_name["connectivity-management-subnet"]
-
-  depends_on = [
-    module.connectivity_network,
-  ]
-}
