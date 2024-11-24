@@ -78,7 +78,7 @@ module "connectivity_azure_application_gateway" {
   appgw_name                = var.appgw_name
   location                  = var.location
   resource_group_name       = var.connectivity_resource_group_name
-  subnet_id                 = module.connectivity_network.subnet_ids["ApplicationGatewaySubnet"]
+  subnet_id                 = module.connectivity_network.subnet_ids["AzureApplicationGatewaySubnet"]
   private_ip_address        = var.appgw_private_ip_address
   waf_mode                  = var.waf_mode
   waf_rule_set_version      = var.waf_rule_set_version
@@ -97,7 +97,7 @@ module "api_management" {
   location            = var.location
   resource_group_name = var.connectivity_resource_group_name
   sku_name            = var.api_management_sku
-  subnet_id           = module.connectivity_network.subnet_ids["APIManagementSubnet"]
+  subnet_id           = module.connectivity_network.subnet_ids["AzureAPIManagementSubnet"]
   publisher_name      = var.api_management_publisher_name
   publisher_email     = var.api_management_publisher_email
   tags                = merge(var.shared_tags, { project = "connectivity" })
