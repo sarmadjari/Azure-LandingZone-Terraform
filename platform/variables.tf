@@ -177,3 +177,9 @@ variable "api_management_publisher_email" {
   description = "Email of the publisher for Azure API Management instance"
   type        = string
 }
+
+variable "management_bastion_name" {
+  description = "Name of the Azure Bastion Host"
+  type        = string
+  
+}

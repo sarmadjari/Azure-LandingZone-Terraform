@@ -48,7 +48,7 @@ identity_subnets = [
 ]
 
 management_subnets = [
-  { name = "admin-subnet", address_prefix = "10.2.1.0/24" },
+  { name = "AzureBastionSubnet", address_prefix = "10.2.1.0/27" },
   { name = "monitoring-subnet", address_prefix = "10.2.2.0/24" },
 ]
 
@@ -67,3 +67,7 @@ api_management_name           = "my-api-management"
 api_management_sku            = "Premium_1" # sku_name is a string consisting of two parts separated by an underscore(_). The first part is the name, valid values include: Consumption, Developer, Basic, Standard and Premium. The second part is the capacity (e.g. the number of deployed units of the sku), which must be a positive integer (e.g. Premium_1).
 api_management_publisher_name = "My Company"
 api_management_publisher_email = "admin@mycompany.com"
+
+
+# Azure Bastion configuration
+management_bastion_name            = "management-bastion"

@@ -138,3 +138,19 @@ module "connectivity_security" {
     module.connectivity_azure_application_gateway
   ]
 }
+
+
+# Management Azure Bastion Module
+module "azure_bastion" {
+  source              = "./management/azure_bastion"
+  providers = {
+    azurerm.management = azurerm.management
+  }
+
+  bastion_name        = var.management_bastion_name
+  location            = var.location
+  resource_group_name = var.management_resource_group_name
+  subnet_id           = module.management_network.subnet_ids["AzureBastionSubnet"]
+  tags                = merge(var.shared_tags, { project = "management" })
+  depends_on          = [module.management_network]
+}

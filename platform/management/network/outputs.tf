@@ -11,15 +11,18 @@ output "vnet_name" {
   value       = azurerm_virtual_network.vnet.name
 }
 
-# Output the Subnet IDs
 output "subnet_ids" {
-  description = "The list of subnet IDs"
+  description = "The list of subnet IDs for the Management VNet"
   value       = { for k, v in azurerm_subnet.subnet : k => v.id }
 }
 
-# Output the Subnet Names
 output "subnet_names" {
-  description = "The list of subnet names"
+  description = "The list of subnet names for the Management VNet"
   value       = { for k, v in azurerm_subnet.subnet : k => v.name }
+}
+
+output "subnet_ids_by_name" {
+  description = "A map of subnet names to their respective IDs for the Management VNet"
+  value       = { for k, v in azurerm_subnet.subnet : v.name => v.id }
 }
 
