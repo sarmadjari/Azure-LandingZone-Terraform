@@ -25,10 +25,9 @@ resource "azurerm_api_management" "api_management" {
   virtual_network_configuration {
     subnet_id = var.subnet_id
   }
-
   virtual_network_type = "Internal"  # Ensures the APIM is private
-
   tags = var.tags
+  depends_on          = [azurerm_network_security_group.apim_nsg]
 }
 
 # Define Network Security Group (NSG)
