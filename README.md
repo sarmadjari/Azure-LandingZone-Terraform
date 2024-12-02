@@ -4,6 +4,14 @@ This Terraform template sets up a multi-tier network architecture in Azure, incl
 
 This template was built based on the official Microsoft documentation from the [Cloud Adoption Framework Landing Zone](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/).
 
+![Azure Landing Zone Architecture Diagram - Hub and Spoke](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/media/azure-landing-zone-architecture-diagram-hub-spoke.svg)
+
+Currently the template is to deploy the **Platform**:
+- Connectivity
+- Identity
+- Management
+
+
 ## Modules
 
 ### Connectivity Network
