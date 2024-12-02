@@ -79,7 +79,7 @@ resource "azurerm_network_security_group" "apim_nsg" {
 
 # Associate NSG with Azure API Management Subnet
 resource "azurerm_subnet_network_security_group_association" "apim_nsg_association" {
-  provider            = azurerm.connectivity
+  provider                  = azurerm.connectivity
   subnet_id                 = var.subnet_id
   network_security_group_id = azurerm_network_security_group.apim_nsg.id
 }
