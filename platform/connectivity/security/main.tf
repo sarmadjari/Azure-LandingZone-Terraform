@@ -156,7 +156,7 @@ resource "azurerm_subnet_route_table_association" "identity_subnets" {
 
 
 # For Management Subnets
-# Associate Route Tables to Subnets, excluding AzureFirewallManagementSubnet and AzureFirewallSubnet
+# Associate Route Tables to Subnets, excluding AzureBastionSubnet
 resource "azurerm_subnet_route_table_association" "management_subnets" {
 provider       = azurerm.management
   for_each = {
