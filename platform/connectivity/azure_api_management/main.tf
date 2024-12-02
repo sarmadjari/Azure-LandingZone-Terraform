@@ -27,5 +27,7 @@ resource "azurerm_api_management" "api_management" {
     subnet_id = var.subnet_id
   }
 
+  virtual_network_type = "Internal"  # Ensures the APIM is private
+
   tags = var.tags
 }
