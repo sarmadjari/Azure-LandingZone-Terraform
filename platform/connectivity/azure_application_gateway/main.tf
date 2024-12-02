@@ -12,6 +12,7 @@ terraform {
 
 # Public IP for the Application Gateway
 resource "azurerm_public_ip" "appgw_public_ip" {
+  provider            = azurerm.connectivity
   name                = "${var.appgw_name}-pip"
   location            = var.location
   resource_group_name = var.resource_group_name

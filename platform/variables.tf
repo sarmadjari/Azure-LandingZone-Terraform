@@ -163,6 +163,13 @@ variable "api_management_name" {
   type        = string
 }
 
+
+variable "management_vnet_address_space" {
+  description = "Address space for Management VNet"
+  type        = list(string)
+}
+
+
 variable "api_management_sku" {
   description = "SKU for Azure API Management (e.g., Developer, Standard, Premium)"
   type        = string
