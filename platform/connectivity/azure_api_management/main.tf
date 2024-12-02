@@ -21,7 +21,6 @@ resource "azurerm_api_management" "api_management" {
   publisher_name      = var.publisher_name
   publisher_email     = var.publisher_email
   sku_name            = var.sku_name
-  # zones               = ["1", "2", "3"] it dose not work unless we specify a public IP, Premium is Zone deundent by default
 
   virtual_network_configuration {
     subnet_id = var.subnet_id
@@ -34,7 +33,8 @@ resource "azurerm_api_management" "api_management" {
 
 # Define Network Security Group (NSG)
 resource "azurerm_network_security_group" "apim_nsg" {
-  name                = "apim-nsg"
+  provider            = azurerm.connectivity
+  name                = "${var.api_management_name}-nsg"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -47,7 +47,7 @@ resource "azurerm_network_security_group" "apim_nsg" {
     protocol                   = "*"
     source_port_range          = "*"
     destination_port_range     = "*"
-    source_address_prefix      = var.connectivity_vnet_address_space[0] # Add first address space
+    source_address_prefix      = var.connectivity_vnet_address_space[0]
     destination_address_prefix = "*"
   }
 
@@ -60,7 +60,7 @@ resource "azurerm_network_security_group" "apim_nsg" {
     protocol                   = "*"
     source_port_range          = "*"
     destination_port_range     = "*"
-    source_address_prefix      = var.management_vnet_address_space[0] # Add first address space
+    source_address_prefix      = var.management_vnet_address_space[0]
     destination_address_prefix = "*"
   }
 
@@ -73,16 +73,14 @@ resource "azurerm_network_security_group" "apim_nsg" {
     protocol                   = "*"
     source_port_range          = "*"
     destination_port_range     = "*"
-    source_address_prefix      = var.identity_vnet_address_space[0] # Add first address space
+    source_address_prefix      = var.identity_vnet_address_space[0]
     destination_address_prefix = "*"
   }
 }
 
-
-# Associate NSG with the Azure API Management Subnet
+# Associate NSG with Azure API Management Subnet
 resource "azurerm_subnet_network_security_group_association" "apim_nsg_association" {
-  subnet_id                 = module.connectivity_network.subnet_ids["AzureAPIManagementSubnet"]
+  provider            = azurerm.connectivity
+  subnet_id                 = var.subnet_id
   network_security_group_id = azurerm_network_security_group.apim_nsg.id
 }
-
-

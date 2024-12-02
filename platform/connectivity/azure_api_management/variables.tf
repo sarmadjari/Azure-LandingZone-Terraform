@@ -20,7 +20,6 @@ variable "sku_name" {
   type        = string
 }
 
-
 variable "subnet_id" {
   description = "ID of the subnet for Azure API Management"
   type        = string
@@ -40,4 +39,20 @@ variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
   default     = {}
+}
+
+# Address Spaces for VNets
+variable "connectivity_vnet_address_space" {
+  description = "Address space for Connectivity VNet"
+  type        = list(string)
+}
+
+variable "management_vnet_address_space" {
+  description = "Address space for Management VNet"
+  type        = list(string)
+}
+
+variable "identity_vnet_address_space" {
+  description = "Address space for Identity VNet"
+  type        = list(string)
 }
