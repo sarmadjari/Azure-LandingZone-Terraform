@@ -73,3 +73,38 @@ The connectivity Azure API Management module sets up the API Management service 
 The connectivity security module sets up security components like network security groups and application security groups.
 
 - **Location**: `platform/connectivity/security`
+- **Main Configuration**: [platform/connectivity/security/main.tf](platform/connectivity/security/main.tf)
+- **Variables**: [platform/connectivity/security/variables.tf](platform/connectivity/security/variables.tf)
+- **Outputs**: [platform/connectivity/security/outputs.tf](platform/connectivity/security/outputs.tf)
+
+### Management Azure Bastion
+
+The management Azure Bastion module sets up the Azure Bastion service in the management VNet.
+
+- **Location**: `platform/management/azure_bastion`
+- **Main Configuration**: [platform/management/azure_bastion/main.tf](platform/management/azure_bastion/main.tf)
+- **Variables**: [platform/management/azure_bastion/variables.tf](platform/management/azure_bastion/variables.tf)
+- **Outputs**: [platform/management/azure_bastion/outputs.tf](platform/management/azure_bastion/outputs.tf)
+
+## Usage
+
+To deploy this Terraform template, navigate to the `platform` directory and run the following commands:
+
+```sh
+terraform init
+terraform plan -var-file="terraform.tfvars"
+terraform apply -var-file="terraform.tfvars"
+```
+
+Ensure that you have updated the `terraform.tfvars` file with the necessary variable values before deployment.
+
+If you encounter issues with subscriptions or permissions, try clearing your Azure account and logging in again:
+
+```sh
+az account clear
+az login --scope https://management.azure.com/.default
+```
+
+## License
+
+This project is licensed under the MIT License.
