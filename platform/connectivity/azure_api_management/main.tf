@@ -93,7 +93,7 @@ resource "azurerm_network_security_group" "apim_nsg" {
     destination_address_prefix = "VirtualNetwork"
   }
 
-  # Outbound: Allow traffic to Azure dependencies (e.g., Storage, Azure Monitor, Key Vault)
+  # Outbound: Allow traffic to Allow Control Plane Traffic and Azure dependencies (e.g., Storage, Azure Monitor, Key Vault)
   security_rule {
     name                       = "Allow-Control-Plane-Outbound"
     priority                   = 140
@@ -116,19 +116,6 @@ resource "azurerm_network_security_group" "apim_nsg" {
     source_port_range          = "*"
     destination_port_range     = "53"
     source_address_prefix      = "*"
-    destination_address_prefix = "AzureCloud"
-  }
-
-  # Outbound: Allow Control Plane Traffic
-  security_rule {
-    name                       = "Allow-Control-Plane-Traffic"
-    priority                   = 160
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = "VirtualNetwork"
     destination_address_prefix = "AzureCloud"
   }
 
