@@ -75,6 +75,48 @@ resource "azurerm_network_security_group" "apim_nsg" {
     source_address_prefix      = var.identity_vnet_address_space[0]
     destination_address_prefix = "*"
   }
+
+  # Allow outbound traffic to API Management management endpoint
+  security_rule {
+    name                       = "Allow-Management-Endpoint-Outbound"
+    priority                   = 130
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "3443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "AzureCloud" # Use the AzureCloud service tag
+  }
+
+  # Allow outbound DNS (Port 53)
+  security_rule {
+    name                       = "Allow-DNS-Outbound"
+    priority                   = 140
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Udp"
+    source_port_range          = "*"
+    destination_port_range     = "53"
+    source_address_prefix      = "*"
+    destination_address_prefix = "AzureCloud"
+  }
+
+  # Allow outbound control plane traffic
+  security_rule {
+    name                       = "Allow-Control-Plane-Traffic"
+    priority                   = 150
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "AzureCloud"
+  }
+
+
+
 }
 
 # Associate NSG with Azure API Management Subnet
