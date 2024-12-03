@@ -76,10 +76,10 @@ resource "azurerm_network_security_group" "apim_nsg" {
     destination_address_prefix = "*"
   }
 
-  # Allow Inbound traffic to API Management management endpoint
+  # Inbound: Allow traffic to Management Endpoint
   security_rule {
     name                       = "Allow-Management-Endpoint"
-    priority                   = 110
+    priority                   = 130
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -87,6 +87,19 @@ resource "azurerm_network_security_group" "apim_nsg" {
     destination_port_range     = "3443"
     source_address_prefix      = "ApiManagement"
     destination_address_prefix = "VirtualNetwork"
+  }
+
+  # Outbound: Allow traffic to Azure dependencies (e.g., Storage, Azure Monitor, Key Vault)
+  security_rule {
+    name                       = "Allow-Control-Plane-Outbound"
+    priority                   = 140
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "VirtualNetwork"
+    destination_address_prefix = "AzureCloud"
   }
 
 
