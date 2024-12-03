@@ -129,7 +129,6 @@ variable "appgw_name" {
 variable "appgw_private_ip_address" {
   description = "Private IP address for the Application Gateway"
   type        = string
-  default     = "10.0.2.4"  # Ensure this IP is within the application-gateway-subnet
 }
 
 variable "waf_mode" {
