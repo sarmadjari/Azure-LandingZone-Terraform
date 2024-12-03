@@ -118,7 +118,7 @@ resource "azurerm_network_security_group" "apim_nsg" {
   # Outbound: Allow Control Plane Traffic
   security_rule {
     name                       = "Allow-Control-Plane-Traffic"
-    priority                   = 200
+    priority                   = 160
     direction                  = "Outbound"
     access                     = "Allow"
     protocol                   = "Tcp"
