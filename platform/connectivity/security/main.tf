@@ -26,6 +26,7 @@ resource "azurerm_route_table" "firewall_management_route_table" {
   resource_group_name = var.connectivity_resource_group_name
   tags                = merge(var.shared_tags, { project = "connectivity" })
 
+  # This route ensures Azure Firewall Management Subnet can communicate with the control plane for essential operations (logging, updates, and threat intelligence).
   route {
     name                   = "default-route"
     address_prefix         = "0.0.0.0/0"
