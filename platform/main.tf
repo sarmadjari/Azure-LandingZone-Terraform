@@ -69,6 +69,15 @@ module "connectivity_azure_firewall" {
   depends_on = [module.connectivity_network]
 }
 
+# Extract AzureApplicationGatewaySubnet address_prefix
+locals {
+  azure_application_gateway_subnet_prefix = lookup(
+    element([for subnet in var.connectivity_subnets : subnet if subnet.name == "AzureApplicationGatewaySubnet"], 0),
+    "address_prefix",
+    null
+  )
+}
+
 # Connectivity Application Gateway Module
 module "connectivity_azure_application_gateway" {
   source = "./connectivity/azure_application_gateway"
@@ -79,7 +88,7 @@ module "connectivity_azure_application_gateway" {
   location                  = var.location
   resource_group_name       = var.connectivity_resource_group_name
   subnet_id                 = module.connectivity_network.subnet_ids["AzureApplicationGatewaySubnet"]
-  private_ip_address        = var.appgw_private_ip_address
+  private_ip_address        = cidrhost(local.azure_application_gateway_subnet_prefix, 4) # Example: Get 4th usable IP
   waf_mode                  = var.waf_mode
   waf_rule_set_version      = var.waf_rule_set_version
   tags                      = merge(var.shared_tags, { project = "connectivity" })

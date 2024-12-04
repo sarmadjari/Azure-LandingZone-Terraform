@@ -20,6 +20,7 @@ resource "azurerm_public_ip" "appgw_public_ip" {
   sku                 = "Standard"
 }
 
+
 # Application Gateway
 resource "azurerm_application_gateway" "app_gateway" {
   provider            = azurerm.connectivity
@@ -99,6 +100,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     priority                   = 101
   }
 
+  
   waf_configuration {
     enabled          = true
     firewall_mode    = var.waf_mode
