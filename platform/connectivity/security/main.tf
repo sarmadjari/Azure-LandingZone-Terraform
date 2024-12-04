@@ -43,21 +43,21 @@ resource "azurerm_route_table" "connectivity_route_table" {
   tags                = merge(var.shared_tags, { project = "connectivity" })
 
   route {
-    name                   = "to-firewall-connectivity"
+    name                   = "to-firewall-then-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
-    name                   = "to-firewall-identity"
+    name                   = "to-firewall-then-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
-    name                   = "to-firewall-management"
+    name                   = "to-firewall-then-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
@@ -73,21 +73,21 @@ resource "azurerm_route_table" "identity_route_table" {
   tags                = merge(var.shared_tags, { project = "identity" })
 
   route {
-    name                   = "to-firewall-connectivity"
+    name                   = "to-firewall-then-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
-    name                   = "to-firewall-identity"
+    name                   = "to-firewall-then-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
-    name                   = "to-firewall-management"
+    name                   = "to-firewall-then-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
@@ -103,21 +103,21 @@ resource "azurerm_route_table" "management_route_table" {
   tags                = merge(var.shared_tags, { project = "management" })
 
   route {
-    name                   = "to-firewall-connectivity"
+    name                   = "to-firewall-then-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
-    name                   = "to-firewall-identity"
+    name                   = "to-firewall-then-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
   }
 
   route {
-    name                   = "to-firewall-management"
+    name                   = "to-firewall-then-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.azure_firewall_private_ip
