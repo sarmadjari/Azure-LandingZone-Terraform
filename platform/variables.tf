@@ -126,11 +126,6 @@ variable "appgw_name" {
   default     = "appgw-dev"
 }
 
-variable "appgw_private_ip_address" {
-  description = "Private IP address for the Application Gateway"
-  type        = string
-}
-
 variable "waf_mode" {
   description = "WAF mode: Detection or Prevention"
   type        = string

@@ -61,12 +61,17 @@ azure_sku_tier      = "Premium"
 
 # Application Gateway Configurations
 appgw_name                 = "app-gateway"
-appgw_private_ip_address   = "10.0.2.4"  # Ensure this IP is within the application-gateway-subnet
 
 
 # API Management Configurations
+# API Management Configurations
+# The API name must to be globaly unique
+# The name is used to create a DNS endpoint in the format <api_name>.azure-api.net
 api_management_name           = "my-api-management"
-api_management_sku            = "Premium_1" # sku_name is a string consisting of two parts separated by an underscore(_). The first part is the name, valid values include: Consumption, Developer, Basic, Standard and Premium. The second part is the capacity (e.g. the number of deployed units of the sku), which must be a positive integer (e.g. Premium_1).
+# api_management_sku is a string consisting of two parts separated by an underscore(_).
+# The first part is the name, valid values include: Consumption, Developer, Basic, Standard and Premium.
+# The second part is the capacity (e.g. the number of deployed units of the sku), which must be a positive integer (e.g. Premium_1).
+api_management_sku            = "Premium_1"
 api_management_publisher_name = "My Company"
 api_management_publisher_email = "admin@mycompany.com"
 
