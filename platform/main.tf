@@ -118,7 +118,6 @@ module "api_management" {
 
 
 
-
 # Connectivity Security Module
 module "connectivity_security" {
   source              = "./connectivity/security"
