@@ -34,12 +34,10 @@ connectivity_subnets = [
   { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.11.0/24" },
   { name = "AzureApplicationGatewaySubnet", address_prefix = "10.0.2.0/24" },
   { name = "AzureAPIManagementSubnet", address_prefix = "10.0.3.0/28" },
-  #{ name = "fortigate-external-subnet", address_prefix = "10.0.1.0/26" },       # 64 (59 Usable)  addresses for External   (10.0.1.4 - 10.0.1.62)
-  #{ name = "fortigate-internal-subnet", address_prefix = "10.0.1.64/26" },      # 64 (59 Usable)  addresses for Internal   (10.0.1.68 - 10.0.1.126)
-  #{ name = "fortigate-ha-sync-subnet", address_prefix = "10.0.1.128/29" },      # 8  (3 Usable)   addresses for HA Sync    (10.0.1.132 - 10.0.1.134)
-  #{ name = "fortigate-protected-a-subnet", address_prefix = "10.0.1.144/28" },  # 16 (11 Usable)  addresses for Protected  (10.0.1.148 - 10.0.1.158)
-  #{ name = "nva2-external-subnet", address_prefix = "10.0.3.0/24" },
-  #{ name = "nva2-internal-subnet", address_prefix = "10.0.4.0/24" },
+  #{ name = "subnet1", address_prefix = "10.0.1.0/26" },    # 64 (59 Usable)  (10.0.1.4 - 10.0.1.62)
+  #{ name = "subnet2", address_prefix = "10.0.1.64/26" },   # 64 (59 Usable)  (10.0.1.68 - 10.0.1.126)
+  #{ name = "subnet3", address_prefix = "10.0.1.128/29" },  # 8  (3 Usable)   (10.0.1.132 - 10.0.1.134)
+  #{ name = "subnet4", address_prefix = "10.0.1.144/28" },  # 16 (11 Usable)  (10.0.1.148 - 10.0.1.158)
 ]
 
 identity_subnets = [
