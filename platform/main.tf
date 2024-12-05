@@ -166,3 +166,22 @@ module "azure_bastion" {
   tags                = merge(var.shared_tags, { project = "management" })
   depends_on          = [module.management_network]
 }
+
+# Management Azure Monitor Module
+module "connectivity_azure_vpngateway" {
+  source              = "./connectivity/azure_vpngateway"
+  providers = {
+    azurerm.connectivity = azurerm.connectivity
+  }
+
+  vpn_gateway_name        = var.vpn_gateway_name
+  location                = var.location
+  resource_group_name     = var.connectivity_resource_group_name
+  gateway_subnet_id       = module.connectivity_network.subnet_ids["GatewaySubnet"]
+  vpn_gateway_sku         = var.vpn_gateway_sku
+  tags                    = merge(var.shared_tags, { project = "connectivity" })
+
+  depends_on = [
+    module.connectivity_network
+  ]
+}

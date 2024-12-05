@@ -177,3 +177,14 @@ variable "management_bastion_name" {
   type        = string
   
 }
+
+variable "vpn_gateway_name" {
+  description = "Name of the VPN Gateway"
+  type        = string
+}
+
+variable "vpn_gateway_sku" {
+  description = "SKU of the VPN Gateway"
+  type        = string
+  default     = "VpnGw1"
+}

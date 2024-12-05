@@ -29,11 +29,12 @@ management_vnet_address_space   = ["10.2.0.0/16"]
 
 # Subnet Definitions
 connectivity_subnets = [
-  { name = "connectivity-management-subnet", address_prefix = "10.0.100.0/24" },
-  { name = "AzureFirewallSubnet", address_prefix = "10.0.10.0/24" },
-  { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.11.0/24" },
-  { name = "AzureApplicationGatewaySubnet", address_prefix = "10.0.2.0/24" },
-  { name = "AzureAPIManagementSubnet", address_prefix = "10.0.3.0/28" },
+  { name = "connectivity-management-subnet", address_prefix = "10.0.10.0/24" },
+  { name = "GatewaySubnet", address_prefix = "10.0.2.0/24" },
+  { name = "AzureFirewallSubnet", address_prefix = "10.0.3.0/24" },
+  { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.30.0/24" },
+  { name = "AzureApplicationGatewaySubnet", address_prefix = "10.0.4.0/24" },
+  { name = "AzureAPIManagementSubnet", address_prefix = "10.0.5.0/28" },
   #{ name = "subnet1", address_prefix = "10.0.1.0/26" },    # 64 (59 Usable)  (10.0.1.4 - 10.0.1.62)
   #{ name = "subnet2", address_prefix = "10.0.1.64/26" },   # 64 (59 Usable)  (10.0.1.68 - 10.0.1.126)
   #{ name = "subnet3", address_prefix = "10.0.1.128/29" },  # 8  (3 Usable)   (10.0.1.132 - 10.0.1.134)
@@ -76,3 +77,8 @@ api_management_publisher_email = "admin@mycompany.com"
 
 # Azure Bastion configuration
 management_bastion_name            = "management-bastion"
+
+
+# Azure VPN Gateway Configurations
+vpn_gateway_name = "vpn-gateway"
+vpn_gateway_sku  = "VpnGw2AZ" # VpnGw2AZ Gen2 Zone Redundent Gateway
