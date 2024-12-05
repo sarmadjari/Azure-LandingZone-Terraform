@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.6.0"
+      version = "4.12.0"
       configuration_aliases = [
         azurerm.connectivity
       ]
@@ -21,6 +21,7 @@ resource "azurerm_api_management" "api_management" {
   publisher_name      = var.publisher_name
   publisher_email     = var.publisher_email
   sku_name            = var.sku_name
+  
 
   virtual_network_configuration {
     subnet_id = var.subnet_id
