@@ -6,6 +6,12 @@ variable "location" {
   type        = string
 }
 
+# Tenant ID
+variable "tenant_id" {
+  description = "Azure Tenant ID"
+  type        = string
+}
+
 # Subscription IDs
 variable "connectivity_subscription_id" {
   description = "Subscription ID for Connectivity VNet"

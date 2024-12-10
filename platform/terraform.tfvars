@@ -2,6 +2,9 @@
 
 location = "West Europe"
 
+
+tenant_id                   = "0000000-0000-0000-0000-000000000000"
+
 connectivity_subscription_id = "0000000-0000-0000-0000-000000000000"
 identity_subscription_id     = "0000000-0000-0000-0000-000000000000"
 management_subscription_id   = "0000000-0000-0000-0000-000000000000"

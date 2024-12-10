@@ -12,6 +12,7 @@ terraform {
 # Connectivity Subscription Provider
 provider "azurerm" {
   alias           = "connectivity"
+  tenant_id       = var.tenant_id
   subscription_id = var.connectivity_subscription_id
   features        {}
 }
@@ -19,6 +20,7 @@ provider "azurerm" {
 # Identity Subscription Provider
 provider "azurerm" {
   alias           = "identity"
+  tenant_id       = var.tenant_id
   subscription_id = var.identity_subscription_id
   features        {}
 }
@@ -26,6 +28,7 @@ provider "azurerm" {
 # Management Subscription Provider
 provider "azurerm" {
   alias           = "management"
+  tenant_id       = var.tenant_id
   subscription_id = var.management_subscription_id
   features        {}
 }
