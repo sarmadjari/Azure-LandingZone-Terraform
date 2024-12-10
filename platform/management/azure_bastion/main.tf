@@ -21,8 +21,8 @@ resource "azurerm_bastion_host" "bastion" {
     subnet_id            = var.subnet_id
     public_ip_address_id = azurerm_public_ip.bastion_pip.id
   }
-
   tags = var.tags
+  depends_on = [azurerm_public_ip.bastion_pip]
 }
 
 resource "azurerm_public_ip" "bastion_pip" {

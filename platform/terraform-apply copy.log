@@ -1,0 +1,1734 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.connectivity_azure_api_management.azurerm_api_management.api_management will be created
+  + resource "azurerm_api_management" "api_management" {
+      + client_certificate_enabled    = false
+      + developer_portal_url          = (known after apply)
+      + gateway_disabled              = false
+      + gateway_regional_url          = (known after apply)
+      + gateway_url                   = (known after apply)
+      + id                            = (known after apply)
+      + location                      = "westeurope"
+      + management_api_url            = (known after apply)
+      + name                          = "SJ-we-api-management2"
+      + notification_sender_email     = (known after apply)
+      + portal_url                    = (known after apply)
+      + private_ip_addresses          = (known after apply)
+      + public_ip_addresses           = (known after apply)
+      + public_network_access_enabled = true
+      + publisher_email               = "sarmad.jari@microsoft.com"
+      + publisher_name                = "Microsoft"
+      + resource_group_name           = "LZ-connectivity-rg"
+      + scm_url                       = (known after apply)
+      + sku_name                      = "Premium_1"
+      + tags                          = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+      + virtual_network_type          = "Internal"
+
+      + delegation (known after apply)
+
+      + hostname_configuration (known after apply)
+
+      + protocols (known after apply)
+
+      + security (known after apply)
+
+      + sign_in (known after apply)
+
+      + sign_up (known after apply)
+
+      + tenant_access (known after apply)
+
+      + virtual_network_configuration {
+          + subnet_id = (known after apply)
+        }
+    }
+
+  # module.connectivity_azure_api_management.azurerm_network_security_group.apim_nsg will be created
+  + resource "azurerm_network_security_group" "apim_nsg" {
+      + id                  = (known after apply)
+      + location            = "westeurope"
+      + name                = "SJ-we-api-management2-nsg"
+      + resource_group_name = "LZ-connectivity-rg"
+      + security_rule       = [
+          + {
+              + access                                     = "Allow"
+              + destination_address_prefix                 = "*"
+              + destination_address_prefixes               = []
+              + destination_application_security_group_ids = []
+              + destination_port_range                     = "*"
+              + destination_port_ranges                    = []
+              + direction                                  = "Inbound"
+              + name                                       = "Allow-Connectivity-VNet"
+              + priority                                   = 100
+              + protocol                                   = "*"
+              + source_address_prefix                      = "10.0.0.0/16"
+              + source_address_prefixes                    = []
+              + source_application_security_group_ids      = []
+              + source_port_range                          = "*"
+              + source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + access                                     = "Allow"
+              + destination_address_prefix                 = "*"
+              + destination_address_prefixes               = []
+              + destination_application_security_group_ids = []
+              + destination_port_range                     = "*"
+              + destination_port_ranges                    = []
+              + direction                                  = "Inbound"
+              + name                                       = "Allow-Identity-VNet"
+              + priority                                   = 120
+              + protocol                                   = "*"
+              + source_address_prefix                      = "10.1.0.0/16"
+              + source_address_prefixes                    = []
+              + source_application_security_group_ids      = []
+              + source_port_range                          = "*"
+              + source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + access                                     = "Allow"
+              + destination_address_prefix                 = "*"
+              + destination_address_prefixes               = []
+              + destination_application_security_group_ids = []
+              + destination_port_range                     = "*"
+              + destination_port_ranges                    = []
+              + direction                                  = "Inbound"
+              + name                                       = "Allow-Management-VNet"
+              + priority                                   = 110
+              + protocol                                   = "*"
+              + source_address_prefix                      = "10.2.0.0/16"
+              + source_address_prefixes                    = []
+              + source_application_security_group_ids      = []
+              + source_port_range                          = "*"
+              + source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + access                                     = "Allow"
+              + destination_address_prefix                 = "AzureCloud"
+              + destination_address_prefixes               = []
+              + destination_application_security_group_ids = []
+              + destination_port_range                     = "443"
+              + destination_port_ranges                    = []
+              + direction                                  = "Outbound"
+              + name                                       = "Allow-Control-Plane-Outbound"
+              + priority                                   = 140
+              + protocol                                   = "Tcp"
+              + source_address_prefix                      = "VirtualNetwork"
+              + source_address_prefixes                    = []
+              + source_application_security_group_ids      = []
+              + source_port_range                          = "*"
+              + source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + access                                     = "Allow"
+              + destination_address_prefix                 = "AzureCloud"
+              + destination_address_prefixes               = []
+              + destination_application_security_group_ids = []
+              + destination_port_range                     = "53"
+              + destination_port_ranges                    = []
+              + direction                                  = "Outbound"
+              + name                                       = "Allow-DNS-Traffic"
+              + priority                                   = 150
+              + protocol                                   = "Udp"
+              + source_address_prefix                      = "*"
+              + source_address_prefixes                    = []
+              + source_application_security_group_ids      = []
+              + source_port_range                          = "*"
+              + source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + access                                     = "Allow"
+              + destination_address_prefix                 = "VirtualNetwork"
+              + destination_address_prefixes               = []
+              + destination_application_security_group_ids = []
+              + destination_port_range                     = "3443"
+              + destination_port_ranges                    = []
+              + direction                                  = "Inbound"
+              + name                                       = "Allow-Management-Endpoint"
+              + priority                                   = 130
+              + protocol                                   = "Tcp"
+              + source_address_prefix                      = "ApiManagement"
+              + source_address_prefixes                    = []
+              + source_application_security_group_ids      = []
+              + source_port_range                          = "*"
+              + source_port_ranges                         = []
+                # (1 unchanged attribute hidden)
+            },
+        ]
+    }
+
+  # module.connectivity_azure_api_management.azurerm_subnet_network_security_group_association.apim_nsg_association will be created
+  + resource "azurerm_subnet_network_security_group_association" "apim_nsg_association" {
+      + id                        = (known after apply)
+      + network_security_group_id = (known after apply)
+      + subnet_id                 = (known after apply)
+    }
+
+  # module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway will be created
+  + resource "azurerm_application_gateway" "app_gateway" {
+      + id                          = (known after apply)
+      + location                    = "westeurope"
+      + name                        = "app-gateway2"
+      + private_endpoint_connection = (known after apply)
+      + resource_group_name         = "LZ-connectivity-rg"
+      + tags                        = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+
+      + backend_address_pool {
+          + fqdns        = []
+          + id           = (known after apply)
+          + ip_addresses = []
+          + name         = "appgw-backend-pool"
+        }
+
+      + backend_http_settings {
+          + cookie_based_affinity               = "Disabled"
+          + id                                  = (known after apply)
+          + name                                = "appgw-backend-http-settings"
+          + pick_host_name_from_backend_address = false
+          + port                                = 80
+          + probe_id                            = (known after apply)
+          + protocol                            = "Http"
+          + request_timeout                     = 30
+          + trusted_root_certificate_names      = []
+            # (4 unchanged attributes hidden)
+        }
+
+      + frontend_ip_configuration {
+          + id                            = (known after apply)
+          + name                          = "appgw-frontend-ip-private"
+          + private_ip_address            = "10.0.4.4"
+          + private_ip_address_allocation = "Static"
+          + private_link_configuration_id = (known after apply)
+          + subnet_id                     = (known after apply)
+        }
+      + frontend_ip_configuration {
+          + id                            = (known after apply)
+          + name                          = "appgw-frontend-ip-public"
+          + private_ip_address            = (known after apply)
+          + private_ip_address_allocation = "Dynamic"
+          + private_link_configuration_id = (known after apply)
+          + public_ip_address_id          = (known after apply)
+        }
+
+      + frontend_port {
+          + id   = (known after apply)
+          + name = "frontend-port-http"
+          + port = 80
+        }
+
+      + gateway_ip_configuration {
+          + id        = (known after apply)
+          + name      = "appgw-ip-config"
+          + subnet_id = (known after apply)
+        }
+
+      + http_listener {
+          + frontend_ip_configuration_id   = (known after apply)
+          + frontend_ip_configuration_name = "appgw-frontend-ip-private"
+          + frontend_port_id               = (known after apply)
+          + frontend_port_name             = "frontend-port-http"
+          + host_names                     = []
+          + id                             = (known after apply)
+          + name                           = "appgw-http-listener-private"
+          + protocol                       = "Http"
+          + ssl_certificate_id             = (known after apply)
+          + ssl_profile_id                 = (known after apply)
+            # (4 unchanged attributes hidden)
+        }
+      + http_listener {
+          + frontend_ip_configuration_id   = (known after apply)
+          + frontend_ip_configuration_name = "appgw-frontend-ip-public"
+          + frontend_port_id               = (known after apply)
+          + frontend_port_name             = "frontend-port-http"
+          + host_names                     = []
+          + id                             = (known after apply)
+          + name                           = "appgw-http-listener-public"
+          + protocol                       = "Http"
+          + ssl_certificate_id             = (known after apply)
+          + ssl_profile_id                 = (known after apply)
+            # (4 unchanged attributes hidden)
+        }
+
+      + request_routing_rule {
+          + backend_address_pool_id     = (known after apply)
+          + backend_address_pool_name   = "appgw-backend-pool"
+          + backend_http_settings_id    = (known after apply)
+          + backend_http_settings_name  = "appgw-backend-http-settings"
+          + http_listener_id            = (known after apply)
+          + http_listener_name          = "appgw-http-listener-private"
+          + id                          = (known after apply)
+          + name                        = "appgw-http-routing-rule-private"
+          + priority                    = 100
+          + redirect_configuration_id   = (known after apply)
+          + rewrite_rule_set_id         = (known after apply)
+          + rule_type                   = "Basic"
+          + url_path_map_id             = (known after apply)
+            # (3 unchanged attributes hidden)
+        }
+      + request_routing_rule {
+          + backend_address_pool_id     = (known after apply)
+          + backend_address_pool_name   = "appgw-backend-pool"
+          + backend_http_settings_id    = (known after apply)
+          + backend_http_settings_name  = "appgw-backend-http-settings"
+          + http_listener_id            = (known after apply)
+          + http_listener_name          = "appgw-http-listener-public"
+          + id                          = (known after apply)
+          + name                        = "appgw-http-routing-rule-public"
+          + priority                    = 101
+          + redirect_configuration_id   = (known after apply)
+          + rewrite_rule_set_id         = (known after apply)
+          + rule_type                   = "Basic"
+          + url_path_map_id             = (known after apply)
+            # (3 unchanged attributes hidden)
+        }
+
+      + sku {
+          + capacity = 2
+          + name     = "WAF_v2"
+          + tier     = "WAF_v2"
+        }
+
+      + ssl_policy (known after apply)
+
+      + waf_configuration {
+          + enabled                  = true
+          + file_upload_limit_mb     = 100
+          + firewall_mode            = "Prevention"
+          + max_request_body_size_kb = 128
+          + request_body_check       = true
+          + rule_set_type            = "OWASP"
+          + rule_set_version         = "3.2"
+        }
+    }
+
+  # module.connectivity_azure_application_gateway.azurerm_public_ip.appgw_public_ip will be created
+  + resource "azurerm_public_ip" "appgw_public_ip" {
+      + allocation_method       = "Static"
+      + ddos_protection_mode    = "VirtualNetworkInherited"
+      + fqdn                    = (known after apply)
+      + id                      = (known after apply)
+      + idle_timeout_in_minutes = 4
+      + ip_address              = (known after apply)
+      + ip_version              = "IPv4"
+      + location                = "westeurope"
+      + name                    = "app-gateway2-pip"
+      + resource_group_name     = "LZ-connectivity-rg"
+      + sku                     = "Standard"
+      + sku_tier                = "Regional"
+    }
+
+  # module.connectivity_azure_firewall.azurerm_firewall.azure_firewall will be created
+  + resource "azurerm_firewall" "azure_firewall" {
+      + dns_proxy_enabled   = (known after apply)
+      + id                  = (known after apply)
+      + location            = "westeurope"
+      + name                = "internal-firewall2"
+      + resource_group_name = "LZ-connectivity-rg"
+      + sku_name            = "AZFW_VNet"
+      + sku_tier            = "Premium"
+      + tags                = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+      + threat_intel_mode   = (known after apply)
+      + zones               = [
+          + "1",
+          + "2",
+          + "3",
+        ]
+
+      + ip_configuration {
+          + name               = "azureFirewallConfig"
+          + private_ip_address = (known after apply)
+          + subnet_id          = (known after apply)
+        }
+
+      + management_ip_configuration {
+          + name                 = "azureMgmtFirewallConfig"
+          + private_ip_address   = (known after apply)
+          + public_ip_address_id = (known after apply)
+          + subnet_id            = (known after apply)
+        }
+    }
+
+  # module.connectivity_azure_firewall.azurerm_public_ip.azure_firewall_management_public_ip will be created
+  + resource "azurerm_public_ip" "azure_firewall_management_public_ip" {
+      + allocation_method       = "Static"
+      + ddos_protection_mode    = "VirtualNetworkInherited"
+      + fqdn                    = (known after apply)
+      + id                      = (known after apply)
+      + idle_timeout_in_minutes = 4
+      + ip_address              = (known after apply)
+      + ip_version              = "IPv4"
+      + location                = "westeurope"
+      + name                    = "internal-firewall2-mgmt-pip"
+      + resource_group_name     = "LZ-connectivity-rg"
+      + sku                     = "Standard"
+      + sku_tier                = "Regional"
+      + tags                    = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+      + zones                   = [
+          + "1",
+          + "2",
+          + "3",
+        ]
+    }
+
+  # module.connectivity_azure_local_network_gateway.azurerm_local_network_gateway.local_gateway will be created
+  + resource "azurerm_local_network_gateway" "local_gateway" {
+      + address_space       = [
+          + "192.168.1.0/24",
+          + "10.0.0.0/16",
+        ]
+      + gateway_address     = "203.0.113.10"
+      + id                  = (known after apply)
+      + location            = "westeurope"
+      + name                = "MyLocalNetworkGateway2"
+      + resource_group_name = "LZ-connectivity-rg"
+      + tags                = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+    }
+
+  # module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone.private_dns_zone will be created
+  + resource "azurerm_private_dns_zone" "private_dns_zone" {
+      + id                                                    = (known after apply)
+      + max_number_of_record_sets                             = (known after apply)
+      + max_number_of_virtual_network_links                   = (known after apply)
+      + max_number_of_virtual_network_links_with_registration = (known after apply)
+      + name                                                  = "privatedns.azure.local"
+      + number_of_record_sets                                 = (known after apply)
+      + resource_group_name                                   = "LZ-connectivity-rg"
+
+      + soa_record (known after apply)
+    }
+
+  # module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[0] will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_link" {
+      + id                    = (known after apply)
+      + name                  = "privatedns.azure.local-link-0"
+      + private_dns_zone_name = "privatedns.azure.local"
+      + registration_enabled  = true
+      + resource_group_name   = "LZ-connectivity-rg"
+      + virtual_network_id    = (known after apply)
+    }
+
+  # module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[1] will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_link" {
+      + id                    = (known after apply)
+      + name                  = "privatedns.azure.local-link-1"
+      + private_dns_zone_name = "privatedns.azure.local"
+      + registration_enabled  = true
+      + resource_group_name   = "LZ-connectivity-rg"
+      + virtual_network_id    = (known after apply)
+    }
+
+  # module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[2] will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_link" {
+      + id                    = (known after apply)
+      + name                  = "privatedns.azure.local-link-2"
+      + private_dns_zone_name = "privatedns.azure.local"
+      + registration_enabled  = true
+      + resource_group_name   = "LZ-connectivity-rg"
+      + virtual_network_id    = (known after apply)
+    }
+
+  # module.connectivity_azure_vpngateway.azurerm_public_ip.vpn_gateway_pip will be created
+  + resource "azurerm_public_ip" "vpn_gateway_pip" {
+      + allocation_method       = "Static"
+      + ddos_protection_mode    = "VirtualNetworkInherited"
+      + fqdn                    = (known after apply)
+      + id                      = (known after apply)
+      + idle_timeout_in_minutes = 4
+      + ip_address              = (known after apply)
+      + ip_version              = "IPv4"
+      + location                = "westeurope"
+      + name                    = "vpn-gateway2-pip"
+      + resource_group_name     = "LZ-connectivity-rg"
+      + sku                     = "Standard"
+      + sku_tier                = "Regional"
+      + zones                   = [
+          + "1",
+          + "2",
+          + "3",
+        ]
+    }
+
+  # module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway will be created
+  + resource "azurerm_virtual_network_gateway" "vpn_gateway" {
+      + active_active                         = (known after apply)
+      + bgp_route_translation_for_nat_enabled = false
+      + enable_bgp                            = (known after apply)
+      + generation                            = (known after apply)
+      + id                                    = (known after apply)
+      + ip_sec_replay_protection_enabled      = true
+      + location                              = "westeurope"
+      + name                                  = "vpn-gateway2"
+      + remote_vnet_traffic_enabled           = false
+      + resource_group_name                   = "LZ-connectivity-rg"
+      + sku                                   = "VpnGw2AZ"
+      + tags                                  = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+      + type                                  = "Vpn"
+      + virtual_wan_traffic_enabled           = false
+      + vpn_type                              = "RouteBased"
+
+      + bgp_settings (known after apply)
+
+      + ip_configuration {
+          + name                          = "vnetGatewayConfig"
+          + private_ip_address_allocation = "Dynamic"
+          + public_ip_address_id          = (known after apply)
+          + subnet_id                     = (known after apply)
+        }
+    }
+
+  # module.connectivity_network.azurerm_resource_group.connectivity_rg will be created
+  + resource "azurerm_resource_group" "connectivity_rg" {
+      + id       = (known after apply)
+      + location = "westeurope"
+      + name     = "LZ-connectivity-rg"
+      + tags     = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+    }
+
+  # module.connectivity_network.azurerm_subnet.subnet["AzureAPIManagementSubnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.0.5.0/28",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "AzureAPIManagementSubnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-connectivity-rg"
+      + virtual_network_name                          = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_subnet.subnet["AzureApplicationGatewaySubnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.0.4.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "AzureApplicationGatewaySubnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-connectivity-rg"
+      + virtual_network_name                          = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_subnet.subnet["AzureFirewallManagementSubnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.0.30.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "AzureFirewallManagementSubnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-connectivity-rg"
+      + virtual_network_name                          = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_subnet.subnet["AzureFirewallSubnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.0.3.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "AzureFirewallSubnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-connectivity-rg"
+      + virtual_network_name                          = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_subnet.subnet["GatewaySubnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.0.2.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "GatewaySubnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-connectivity-rg"
+      + virtual_network_name                          = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_subnet.subnet["connectivity-management-subnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.0.10.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "connectivity-management-subnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-connectivity-rg"
+      + virtual_network_name                          = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_virtual_network.vnet will be created
+  + resource "azurerm_virtual_network" "vnet" {
+      + address_space       = [
+          + "10.0.0.0/16",
+        ]
+      + dns_servers         = (known after apply)
+      + guid                = (known after apply)
+      + id                  = (known after apply)
+      + location            = "westeurope"
+      + name                = "connectivity-vnet"
+      + resource_group_name = "LZ-connectivity-rg"
+      + subnet              = (known after apply)
+      + tags                = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+    }
+
+  # module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_identity will be created
+  + resource "azurerm_virtual_network_peering" "connectivity_to_identity" {
+      + allow_forwarded_traffic                = true
+      + allow_gateway_transit                  = false
+      + allow_virtual_network_access           = true
+      + id                                     = (known after apply)
+      + name                                   = "connectivity-to-identity"
+      + peer_complete_virtual_networks_enabled = true
+      + remote_virtual_network_id              = (known after apply)
+      + resource_group_name                    = "LZ-connectivity-rg"
+      + use_remote_gateways                    = false
+      + virtual_network_name                   = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management will be created
+  + resource "azurerm_virtual_network_peering" "connectivity_to_management" {
+      + allow_forwarded_traffic                = true
+      + allow_gateway_transit                  = false
+      + allow_virtual_network_access           = true
+      + id                                     = (known after apply)
+      + name                                   = "connectivity-to-management"
+      + peer_complete_virtual_networks_enabled = true
+      + remote_virtual_network_id              = (known after apply)
+      + resource_group_name                    = "LZ-connectivity-rg"
+      + use_remote_gateways                    = false
+      + virtual_network_name                   = "connectivity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_virtual_network_peering.identity_to_connectivity will be created
+  + resource "azurerm_virtual_network_peering" "identity_to_connectivity" {
+      + allow_forwarded_traffic                = true
+      + allow_gateway_transit                  = false
+      + allow_virtual_network_access           = true
+      + id                                     = (known after apply)
+      + name                                   = "identity-to-connectivity"
+      + peer_complete_virtual_networks_enabled = true
+      + remote_virtual_network_id              = (known after apply)
+      + resource_group_name                    = "LZ-identity-rg"
+      + use_remote_gateways                    = false
+      + virtual_network_name                   = "identity-vnet"
+    }
+
+  # module.connectivity_network.azurerm_virtual_network_peering.management_to_connectivity will be created
+  + resource "azurerm_virtual_network_peering" "management_to_connectivity" {
+      + allow_forwarded_traffic                = true
+      + allow_gateway_transit                  = false
+      + allow_virtual_network_access           = true
+      + id                                     = (known after apply)
+      + name                                   = "management-to-connectivity"
+      + peer_complete_virtual_networks_enabled = true
+      + remote_virtual_network_id              = (known after apply)
+      + resource_group_name                    = "LZ-management-rg"
+      + use_remote_gateways                    = false
+      + virtual_network_name                   = "management-vnet"
+    }
+
+  # module.connectivity_security.azurerm_route_table.connectivity_route_table will be created
+  + resource "azurerm_route_table" "connectivity_route_table" {
+      + bgp_route_propagation_enabled = true
+      + id                            = (known after apply)
+      + location                      = "westeurope"
+      + name                          = "connectivity-udr"
+      + resource_group_name           = "LZ-connectivity-rg"
+      + route                         = [
+          + {
+              + address_prefix         = "10.0.0.0/16"
+              + name                   = "to-firewall-then-connectivity"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+          + {
+              + address_prefix         = "10.1.0.0/16"
+              + name                   = "to-firewall-then-identity"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+          + {
+              + address_prefix         = "10.2.0.0/16"
+              + name                   = "to-firewall-then-management"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+        ]
+      + subnets                       = (known after apply)
+      + tags                          = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+    }
+
+  # module.connectivity_security.azurerm_route_table.firewall_management_route_table will be created
+  + resource "azurerm_route_table" "firewall_management_route_table" {
+      + bgp_route_propagation_enabled = false
+      + id                            = (known after apply)
+      + location                      = "westeurope"
+      + name                          = "firewall-management-udr"
+      + resource_group_name           = "LZ-connectivity-rg"
+      + route                         = [
+          + {
+              + address_prefix         = "0.0.0.0/0"
+              + name                   = "default-route"
+              + next_hop_type          = "Internet"
+                # (1 unchanged attribute hidden)
+            },
+        ]
+      + subnets                       = (known after apply)
+      + tags                          = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "connectivity"
+        }
+    }
+
+  # module.connectivity_security.azurerm_route_table.identity_route_table will be created
+  + resource "azurerm_route_table" "identity_route_table" {
+      + bgp_route_propagation_enabled = true
+      + id                            = (known after apply)
+      + location                      = "westeurope"
+      + name                          = "identity-udr"
+      + resource_group_name           = "LZ-identity-rg"
+      + route                         = [
+          + {
+              + address_prefix         = "10.0.0.0/16"
+              + name                   = "to-firewall-then-connectivity"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+          + {
+              + address_prefix         = "10.1.0.0/16"
+              + name                   = "to-firewall-then-identity"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+          + {
+              + address_prefix         = "10.2.0.0/16"
+              + name                   = "to-firewall-then-management"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+        ]
+      + subnets                       = (known after apply)
+      + tags                          = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "identity"
+        }
+    }
+
+  # module.connectivity_security.azurerm_route_table.management_route_table will be created
+  + resource "azurerm_route_table" "management_route_table" {
+      + bgp_route_propagation_enabled = true
+      + id                            = (known after apply)
+      + location                      = "westeurope"
+      + name                          = "management-udr"
+      + resource_group_name           = "LZ-management-rg"
+      + route                         = [
+          + {
+              + address_prefix         = "10.0.0.0/16"
+              + name                   = "to-firewall-then-connectivity"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+          + {
+              + address_prefix         = "10.1.0.0/16"
+              + name                   = "to-firewall-then-identity"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+          + {
+              + address_prefix         = "10.2.0.0/16"
+              + name                   = "to-firewall-then-management"
+              + next_hop_in_ip_address = (known after apply)
+              + next_hop_type          = "VirtualAppliance"
+            },
+        ]
+      + subnets                       = (known after apply)
+      + tags                          = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "management"
+        }
+    }
+
+  # module.connectivity_security.azurerm_subnet_route_table_association.firewall_management_subnet will be created
+  + resource "azurerm_subnet_route_table_association" "firewall_management_subnet" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.connectivity_security.azurerm_subnet_route_table_association.identity_subnets["auth-subnet"] will be created
+  + resource "azurerm_subnet_route_table_association" "identity_subnets" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.connectivity_security.azurerm_subnet_route_table_association.identity_subnets["directory-subnet"] will be created
+  + resource "azurerm_subnet_route_table_association" "identity_subnets" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.connectivity_security.azurerm_subnet_route_table_association.management_subnets["AzureLogAnalyticsSubnet"] will be created
+  + resource "azurerm_subnet_route_table_association" "management_subnets" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.connectivity_security.azurerm_subnet_route_table_association.management_subnets["monitoring-subnet"] will be created
+  + resource "azurerm_subnet_route_table_association" "management_subnets" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.identity_network.azurerm_resource_group.identity_rg will be created
+  + resource "azurerm_resource_group" "identity_rg" {
+      + id       = (known after apply)
+      + location = "westeurope"
+      + name     = "LZ-identity-rg"
+      + tags     = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "identity"
+        }
+    }
+
+  # module.identity_network.azurerm_subnet.subnet["auth-subnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.1.1.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "auth-subnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-identity-rg"
+      + virtual_network_name                          = "identity-vnet"
+    }
+
+  # module.identity_network.azurerm_subnet.subnet["directory-subnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.1.2.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "directory-subnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-identity-rg"
+      + virtual_network_name                          = "identity-vnet"
+    }
+
+  # module.identity_network.azurerm_virtual_network.vnet will be created
+  + resource "azurerm_virtual_network" "vnet" {
+      + address_space       = [
+          + "10.1.0.0/16",
+        ]
+      + dns_servers         = (known after apply)
+      + guid                = (known after apply)
+      + id                  = (known after apply)
+      + location            = "westeurope"
+      + name                = "identity-vnet"
+      + resource_group_name = "LZ-identity-rg"
+      + subnet              = (known after apply)
+      + tags                = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "identity"
+        }
+    }
+
+  # module.management_azure_bastion.azurerm_bastion_host.bastion will be created
+  + resource "azurerm_bastion_host" "bastion" {
+      + copy_paste_enabled        = true
+      + dns_name                  = (known after apply)
+      + file_copy_enabled         = false
+      + id                        = (known after apply)
+      + ip_connect_enabled        = false
+      + kerberos_enabled          = false
+      + location                  = "westeurope"
+      + name                      = "management-bastion"
+      + resource_group_name       = "LZ-management-rg"
+      + scale_units               = 2
+      + session_recording_enabled = false
+      + shareable_link_enabled    = false
+      + sku                       = "Basic"
+      + tags                      = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "management"
+        }
+      + tunneling_enabled         = false
+
+      + ip_configuration {
+          + name                 = "bastion-ip-config"
+          + public_ip_address_id = (known after apply)
+          + subnet_id            = (known after apply)
+        }
+    }
+
+  # module.management_azure_bastion.azurerm_public_ip.bastion_pip will be created
+  + resource "azurerm_public_ip" "bastion_pip" {
+      + allocation_method       = "Static"
+      + ddos_protection_mode    = "VirtualNetworkInherited"
+      + fqdn                    = (known after apply)
+      + id                      = (known after apply)
+      + idle_timeout_in_minutes = 4
+      + ip_address              = (known after apply)
+      + ip_version              = "IPv4"
+      + location                = "westeurope"
+      + name                    = "management-bastion-pip"
+      + resource_group_name     = "LZ-management-rg"
+      + sku                     = "Standard"
+      + sku_tier                = "Regional"
+      + tags                    = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "management"
+        }
+    }
+
+  # module.management_log_analytics_workspace.azurerm_log_analytics_workspace.log_analytics_workspace will be created
+  + resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
+      + allow_resource_only_permissions = true
+      + daily_quota_gb                  = -1
+      + id                              = (known after apply)
+      + internet_ingestion_enabled      = true
+      + internet_query_enabled          = true
+      + local_authentication_disabled   = false
+      + location                        = "westeurope"
+      + name                            = "log-analytics-workspace2"
+      + primary_shared_key              = (sensitive value)
+      + resource_group_name             = "LZ-management-rg"
+      + retention_in_days               = 30
+      + secondary_shared_key            = (sensitive value)
+      + sku                             = "PerGB2018"
+      + tags                            = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "management"
+        }
+      + workspace_id                    = (known after apply)
+    }
+
+  # module.management_log_analytics_workspace.azurerm_private_dns_zone_virtual_network_link.dns_zone_link will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "dns_zone_link" {
+      + id                    = (known after apply)
+      + name                  = "log-analytics-private-endpoint-dns-link"
+      + private_dns_zone_name = "privatelink.ods.opinsights.azure.com"
+      + registration_enabled  = false
+      + resource_group_name   = "LZ-management-rg"
+      + virtual_network_id    = (known after apply)
+    }
+
+  # module.management_log_analytics_workspace.azurerm_private_endpoint.log_analytics_private_endpoint will be created
+  + resource "azurerm_private_endpoint" "log_analytics_private_endpoint" {
+      + custom_dns_configs       = (known after apply)
+      + id                       = (known after apply)
+      + location                 = "westeurope"
+      + name                     = "log-analytics-private-endpoint"
+      + network_interface        = (known after apply)
+      + private_dns_zone_configs = (known after apply)
+      + resource_group_name      = "LZ-management-rg"
+      + subnet_id                = (known after apply)
+
+      + private_dns_zone_group {
+          + id                   = (known after apply)
+          + name                 = "default"
+          + private_dns_zone_ids = (known after apply)
+        }
+
+      + private_service_connection {
+          + is_manual_connection           = false
+          + name                           = "log-analytics-workspace2-connection"
+          + private_connection_resource_id = (known after apply)
+          + private_ip_address             = (known after apply)
+          + subresource_names              = [
+              + "workspace",
+            ]
+        }
+    }
+
+  # module.management_network.azurerm_resource_group.management_rg will be created
+  + resource "azurerm_resource_group" "management_rg" {
+      + id       = (known after apply)
+      + location = "westeurope"
+      + name     = "LZ-management-rg"
+      + tags     = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "management"
+        }
+    }
+
+  # module.management_network.azurerm_subnet.subnet["AzureBastionSubnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.2.1.0/27",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "AzureBastionSubnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-management-rg"
+      + virtual_network_name                          = "management-vnet"
+    }
+
+  # module.management_network.azurerm_subnet.subnet["AzureLogAnalyticsSubnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.2.1.32/27",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "AzureLogAnalyticsSubnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-management-rg"
+      + virtual_network_name                          = "management-vnet"
+    }
+
+  # module.management_network.azurerm_subnet.subnet["monitoring-subnet"] will be created
+  + resource "azurerm_subnet" "subnet" {
+      + address_prefixes                              = [
+          + "10.2.2.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "monitoring-subnet"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "LZ-management-rg"
+      + virtual_network_name                          = "management-vnet"
+    }
+
+  # module.management_network.azurerm_virtual_network.vnet will be created
+  + resource "azurerm_virtual_network" "vnet" {
+      + address_space       = [
+          + "10.2.0.0/16",
+        ]
+      + dns_servers         = (known after apply)
+      + guid                = (known after apply)
+      + id                  = (known after apply)
+      + location            = "westeurope"
+      + name                = "management-vnet"
+      + resource_group_name = "LZ-management-rg"
+      + subnet              = (known after apply)
+      + tags                = {
+          + "environment" = "dev"
+          + "owner"       = "IT Team"
+          + "project"     = "management"
+        }
+    }
+
+Plan: 49 to add, 0 to change, 0 to destroy.
+module.management_network.azurerm_resource_group.management_rg: Creating...
+module.connectivity_network.azurerm_resource_group.connectivity_rg: Creating...
+module.identity_network.azurerm_resource_group.identity_rg: Creating...
+module.management_network.azurerm_resource_group.management_rg: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_resource_group.connectivity_rg: Still creating... [10s elapsed]
+module.identity_network.azurerm_resource_group.identity_rg: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_resource_group.connectivity_rg: Creation complete after 12s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg]
+module.connectivity_network.azurerm_virtual_network.vnet: Creating...
+module.identity_network.azurerm_resource_group.identity_rg: Creation complete after 13s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-identity-rg]
+module.identity_network.azurerm_virtual_network.vnet: Creating...
+module.management_network.azurerm_resource_group.management_rg: Creation complete after 13s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg]
+module.management_network.azurerm_virtual_network.vnet: Creating...
+module.identity_network.azurerm_virtual_network.vnet: Creation complete after 8s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-identity-rg/providers/Microsoft.Network/virtualNetworks/identity-vnet]
+module.identity_network.azurerm_subnet.subnet["auth-subnet"]: Creating...
+module.identity_network.azurerm_subnet.subnet["directory-subnet"]: Creating...
+module.connectivity_network.azurerm_virtual_network.vnet: Creation complete after 10s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet]
+module.connectivity_network.azurerm_subnet.subnet["AzureApplicationGatewaySubnet"]: Creating...
+module.connectivity_network.azurerm_subnet.subnet["AzureFirewallSubnet"]: Creating...
+module.connectivity_network.azurerm_subnet.subnet["GatewaySubnet"]: Creating...
+module.connectivity_network.azurerm_subnet.subnet["AzureFirewallManagementSubnet"]: Creating...
+module.connectivity_network.azurerm_subnet.subnet["connectivity-management-subnet"]: Creating...
+module.connectivity_network.azurerm_subnet.subnet["AzureAPIManagementSubnet"]: Creating...
+module.connectivity_network.azurerm_virtual_network_peering.identity_to_connectivity: Creating...
+module.management_network.azurerm_virtual_network.vnet: Creation complete after 10s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/virtualNetworks/management-vnet]
+module.management_network.azurerm_subnet.subnet["monitoring-subnet"]: Creating...
+module.identity_network.azurerm_subnet.subnet["directory-subnet"]: Creation complete after 7s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-identity-rg/providers/Microsoft.Network/virtualNetworks/identity-vnet/subnets/directory-subnet]
+module.management_network.azurerm_subnet.subnet["AzureLogAnalyticsSubnet"]: Creating...
+module.connectivity_network.azurerm_subnet.subnet["AzureAPIManagementSubnet"]: Creation complete after 6s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/subnets/AzureAPIManagementSubnet]
+module.management_network.azurerm_subnet.subnet["AzureBastionSubnet"]: Creating...
+module.management_network.azurerm_subnet.subnet["monitoring-subnet"]: Creation complete after 7s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/virtualNetworks/management-vnet/subnets/monitoring-subnet]
+module.connectivity_network.azurerm_virtual_network_peering.management_to_connectivity: Creating...
+module.identity_network.azurerm_subnet.subnet["auth-subnet"]: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["AzureFirewallSubnet"]: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["AzureFirewallManagementSubnet"]: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["AzureApplicationGatewaySubnet"]: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["GatewaySubnet"]: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["connectivity-management-subnet"]: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.identity_to_connectivity: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["connectivity-management-subnet"]: Creation complete after 12s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/subnets/connectivity-management-subnet]
+module.identity_network.azurerm_subnet.subnet["auth-subnet"]: Creation complete after 13s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-identity-rg/providers/Microsoft.Network/virtualNetworks/identity-vnet/subnets/auth-subnet]
+module.management_network.azurerm_subnet.subnet["AzureBastionSubnet"]: Creation complete after 8s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/virtualNetworks/management-vnet/subnets/AzureBastionSubnet]
+module.management_network.azurerm_subnet.subnet["AzureLogAnalyticsSubnet"]: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.management_to_connectivity: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["AzureFirewallManagementSubnet"]: Creation complete after 18s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/subnets/AzureFirewallManagementSubnet]
+module.connectivity_network.azurerm_subnet.subnet["AzureApplicationGatewaySubnet"]: Still creating... [20s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["GatewaySubnet"]: Still creating... [20s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["AzureFirewallSubnet"]: Still creating... [20s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.identity_to_connectivity: Still creating... [20s elapsed]
+module.management_network.azurerm_subnet.subnet["AzureLogAnalyticsSubnet"]: Creation complete after 14s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/virtualNetworks/management-vnet/subnets/AzureLogAnalyticsSubnet]
+module.management_azure_bastion.azurerm_public_ip.bastion_pip: Creating...
+module.connectivity_network.azurerm_subnet.subnet["AzureFirewallSubnet"]: Creation complete after 24s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/subnets/AzureFirewallSubnet]
+module.connectivity_network.azurerm_virtual_network_peering.identity_to_connectivity: Creation complete after 27s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-identity-rg/providers/Microsoft.Network/virtualNetworks/identity-vnet/virtualNetworkPeerings/identity-to-connectivity]
+module.management_azure_bastion.azurerm_public_ip.bastion_pip: Creation complete after 8s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/publicIPAddresses/management-bastion-pip]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Creating...
+module.connectivity_network.azurerm_virtual_network_peering.management_to_connectivity: Still creating... [20s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["GatewaySubnet"]: Still creating... [30s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["AzureApplicationGatewaySubnet"]: Still creating... [30s elapsed]
+module.connectivity_network.azurerm_subnet.subnet["GatewaySubnet"]: Creation complete after 30s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/subnets/GatewaySubnet]
+module.connectivity_network.azurerm_subnet.subnet["AzureApplicationGatewaySubnet"]: Creation complete after 36s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/subnets/AzureApplicationGatewaySubnet]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_identity: Creating...
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management: Creating...
+module.connectivity_network.azurerm_virtual_network_peering.management_to_connectivity: Creation complete after 28s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/virtualNetworks/management-vnet/virtualNetworkPeerings/management-to-connectivity]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_identity: Still creating... [10s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management: Still creating... [10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [20s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management: Still creating... [20s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_identity: Still creating... [20s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [30s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_identity: Creation complete after 28s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/virtualNetworkPeerings/connectivity-to-identity]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management: Still creating... [30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [40s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management: Still creating... [40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [50s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management: Still creating... [50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [1m0s elapsed]
+module.connectivity_network.azurerm_virtual_network_peering.connectivity_to_management: Creation complete after 54s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/virtualNetworkPeerings/connectivity-to-management]
+module.connectivity_azure_local_network_gateway.azurerm_local_network_gateway.local_gateway: Creating...
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone.private_dns_zone: Creating...
+module.connectivity_azure_application_gateway.azurerm_public_ip.appgw_public_ip: Creating...
+module.connectivity_azure_firewall.azurerm_public_ip.azure_firewall_management_public_ip: Creating...
+module.connectivity_azure_vpngateway.azurerm_public_ip.vpn_gateway_pip: Creating...
+module.connectivity_azure_api_management.azurerm_network_security_group.apim_nsg: Creating...
+module.connectivity_azure_api_management.azurerm_network_security_group.apim_nsg: Creation complete after 4s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/networkSecurityGroups/SJ-we-api-management2-nsg]
+module.connectivity_azure_api_management.azurerm_subnet_network_security_group_association.apim_nsg_association: Creating...
+module.connectivity_azure_vpngateway.azurerm_public_ip.vpn_gateway_pip: Creation complete after 4s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/publicIPAddresses/vpn-gateway2-pip]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Creating...
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [1m10s elapsed]
+module.connectivity_azure_local_network_gateway.azurerm_local_network_gateway.local_gateway: Still creating... [10s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone.private_dns_zone: Still creating... [10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_public_ip.appgw_public_ip: Still creating... [10s elapsed]
+module.connectivity_azure_firewall.azurerm_public_ip.azure_firewall_management_public_ip: Still creating... [10s elapsed]
+module.connectivity_azure_api_management.azurerm_subnet_network_security_group_association.apim_nsg_association: Still creating... [10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_public_ip.appgw_public_ip: Creation complete after 16s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/publicIPAddresses/app-gateway2-pip]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Creating...
+module.connectivity_azure_firewall.azurerm_public_ip.azure_firewall_management_public_ip: Creation complete after 17s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/publicIPAddresses/internal-firewall2-mgmt-pip]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Creating...
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [1m20s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone.private_dns_zone: Still creating... [20s elapsed]
+module.connectivity_azure_local_network_gateway.azurerm_local_network_gateway.local_gateway: Still creating... [20s elapsed]
+module.connectivity_azure_api_management.azurerm_subnet_network_security_group_association.apim_nsg_association: Creation complete after 20s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworks/connectivity-vnet/subnets/AzureAPIManagementSubnet]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Creating...
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [20s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [10s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [1m30s elapsed]
+module.connectivity_azure_local_network_gateway.azurerm_local_network_gateway.local_gateway: Still creating... [30s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone.private_dns_zone: Still creating... [30s elapsed]
+module.connectivity_azure_local_network_gateway.azurerm_local_network_gateway.local_gateway: Creation complete after 31s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/localNetworkGateways/MyLocalNetworkGateway2]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [30s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone.private_dns_zone: Creation complete after 35s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/privateDnsZones/privatedns.azure.local]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[0]: Creating...
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[2]: Creating...
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[1]: Creating...
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [20s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [20s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [1m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [40s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[0]: Still creating... [10s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[2]: Still creating... [10s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[1]: Still creating... [10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [30s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [1m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [50s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[0]: Still creating... [20s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[1]: Still creating... [20s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[2]: Still creating... [20s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [40s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [2m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [1m0s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[1]: Still creating... [30s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[2]: Still creating... [30s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[0]: Still creating... [30s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [50s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [2m10s elapsed]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[0]: Creation complete after 35s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/privateDnsZones/privatedns.azure.local/virtualNetworkLinks/privatedns.azure.local-link-0]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[2]: Creation complete after 35s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/privateDnsZones/privatedns.azure.local/virtualNetworkLinks/privatedns.azure.local-link-2]
+module.connectivity_azure_private_dns_zone.azurerm_private_dns_zone_virtual_network_link.private_dns_zone_link[1]: Creation complete after 36s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/privateDnsZones/privatedns.azure.local/virtualNetworkLinks/privatedns.azure.local-link-1]
+module.management_log_analytics_workspace.azurerm_private_dns_zone_virtual_network_link.dns_zone_link: Creating...
+module.management_log_analytics_workspace.azurerm_log_analytics_workspace.log_analytics_workspace: Creating...
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [1m10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [1m0s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [1m0s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [2m20s elapsed]
+module.management_log_analytics_workspace.azurerm_log_analytics_workspace.log_analytics_workspace: Still creating... [10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [1m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [1m20s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [1m10s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [1m10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [2m30s elapsed]
+module.management_log_analytics_workspace.azurerm_log_analytics_workspace.log_analytics_workspace: Still creating... [20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [1m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [1m30s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [1m20s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [1m20s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [2m40s elapsed]
+module.management_log_analytics_workspace.azurerm_log_analytics_workspace.log_analytics_workspace: Creation complete after 29s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-workspace2]
+module.management_log_analytics_workspace.azurerm_private_endpoint.log_analytics_private_endpoint: Creating...
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [1m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [1m40s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [1m30s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [1m30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [2m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [1m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [1m50s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [1m40s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [1m40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [3m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [1m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [2m0s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [1m50s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [1m50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [3m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [1m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [2m10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [2m0s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [2m0s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [3m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [2m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [2m20s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [2m10s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [2m10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [3m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [2m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [2m30s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [2m20s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [2m20s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [3m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [2m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [2m40s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [2m30s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [2m30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [3m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [2m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [2m50s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [2m40s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [2m40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [4m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [2m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [3m0s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [2m50s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [2m50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [4m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [2m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [3m10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [3m0s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [3m0s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [4m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [3m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [3m20s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [3m10s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [3m10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [4m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [3m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [3m30s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [3m20s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [3m20s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [4m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [3m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [3m40s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [3m30s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [3m30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [4m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [3m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [3m50s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [3m40s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [3m40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [5m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [3m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [4m0s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [3m50s elapsed]
+module.connectivity_azure_firewall.azurerm_firewall.azure_firewall: Still creating... [3m50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [5m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [3m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [4m10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [4m0s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [5m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [4m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [4m20s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [4m10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [5m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [4m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [4m30s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [4m20s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [5m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [4m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [4m40s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [4m30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [5m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [4m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [4m50s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [4m40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [6m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [4m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [5m0s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [4m50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [6m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [4m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [5m10s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [5m0s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [6m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [5m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [5m20s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Still creating... [5m10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [6m30s elapsed]
+module.connectivity_azure_application_gateway.azurerm_application_gateway.app_gateway: Creation complete after 5m15s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/applicationGateways/app-gateway2]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [5m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [5m30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [6m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [5m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [5m40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [6m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [5m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [5m50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [7m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [5m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [6m0s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [7m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [5m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [6m10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [7m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [6m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [6m20s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [7m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [6m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [6m30s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [7m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [6m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [6m40s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [7m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [6m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [6m50s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [8m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [6m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [7m0s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Still creating... [8m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [6m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [7m10s elapsed]
+module.management_azure_bastion.azurerm_bastion_host.bastion: Creation complete after 8m18s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/bastionHosts/management-bastion]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [7m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [7m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [7m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [7m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [7m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [7m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [7m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [7m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [7m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [8m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [7m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [8m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [8m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [8m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [8m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [8m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [8m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [8m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [8m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [8m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [8m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [9m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [8m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [9m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [9m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [9m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [9m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [9m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [9m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [9m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [9m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [9m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [9m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [10m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [9m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [10m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [10m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [10m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [10m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [10m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [10m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [10m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [10m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [10m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [10m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [11m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [10m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [11m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [11m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [11m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [11m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [11m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [11m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [11m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [11m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [11m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [11m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [12m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [11m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [12m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [12m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [12m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [12m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [12m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [12m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [12m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [12m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [12m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [12m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [13m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [12m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [13m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [13m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [13m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [13m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [13m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [13m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [13m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [13m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [13m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [13m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [14m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [13m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [14m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [14m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [14m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [14m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [14m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [14m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [14m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [14m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [14m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [14m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [15m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [14m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [15m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [15m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [15m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [15m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [15m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [15m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [15m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [15m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [15m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [15m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [16m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [15m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [16m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [16m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [16m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [16m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [16m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [16m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [16m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [16m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [16m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [16m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [17m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [16m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [17m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [17m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [17m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [17m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [17m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [17m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [17m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [17m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [17m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [17m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [18m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [17m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [18m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [18m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [18m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [18m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [18m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [18m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [18m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [18m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [18m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [18m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [19m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [18m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [19m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [19m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [19m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [19m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [19m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [19m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [19m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [19m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [19m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [19m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [20m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [19m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [20m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [20m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [20m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [20m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [20m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [20m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [20m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [20m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [20m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [20m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [21m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [20m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [21m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [21m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [21m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [21m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [21m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [21m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [21m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [21m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [21m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [21m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [22m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [21m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [22m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [22m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [22m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [22m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [22m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [22m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [22m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [22m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [22m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [22m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [23m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [22m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [23m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [23m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [23m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [23m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [23m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [23m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [23m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [23m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [23m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [23m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [24m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [23m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [24m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [24m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [24m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [24m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [24m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [24m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [24m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [24m30s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [24m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [24m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [25m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [24m50s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [25m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [25m0s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [25m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [25m10s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [25m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [25m20s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Still creating... [25m40s elapsed]
+module.connectivity_azure_vpngateway.azurerm_virtual_network_gateway.vpn_gateway: Creation complete after 25m47s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.Network/virtualNetworkGateways/vpn-gateway2]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [25m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [25m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [25m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [26m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [26m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [26m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [26m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [26m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [26m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [27m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [27m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [27m20s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [27m30s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [27m40s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [27m50s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [28m0s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [28m10s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [28m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [28m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [28m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [28m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [29m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [29m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [29m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [29m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [29m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [29m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [30m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [30m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [30m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [30m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [30m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [30m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [31m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [31m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [31m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [31m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [31m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [31m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [32m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [32m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [32m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [32m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [32m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [32m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [33m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [33m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [33m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [33m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [33m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [33m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [34m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [34m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [34m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [34m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [34m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [34m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [35m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [35m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [35m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [35m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [35m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [35m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [36m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [36m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [36m21s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [36m31s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [36m41s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [36m51s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [37m1s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Still creating... [37m11s elapsed]
+module.connectivity_azure_api_management.azurerm_api_management.api_management: Creation complete after 37m16s [id=/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-connectivity-rg/providers/Microsoft.ApiManagement/service/SJ-we-api-management2]
+
+Error: creating/updating Azure Firewall (Subscription: "3cae269c-98c8-4608-b053-a0b6d44f9974"
+Resource Group Name: "LZ-connectivity-rg"
+Azure Firewall Name: "internal-firewall2"): polling after CreateOrUpdate: polling failed: the Azure API returned the following error:
+
+Status: "InternalServerError"
+Code: ""
+Message: "An error occurred."
+Activity Id: ""
+
+---
+
+API Response:
+
+----[start]----
+{"status":"Failed","error":{"code":"InternalServerError","message":"An error occurred.","details":[]}}
+-----[end]-----
+
+
+  with module.connectivity_azure_firewall.azurerm_firewall.azure_firewall,
+  on connectivity\azure_firewall\main.tf line 28, in resource "azurerm_firewall" "azure_firewall":
+  28: resource "azurerm_firewall" "azure_firewall" {
+
+
+Error: creating Private Endpoint (Subscription: "3cae269c-98c8-4608-b053-a0b6d44f9974"
+Resource Group Name: "LZ-management-rg"
+Private Endpoint Name: "log-analytics-private-endpoint"): performing CreateOrUpdate: unexpected status 400 (400 Bad Request) with error: SubscriptionNotRegisteredForFeature: Subscription /subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups//providers/Microsoft.Network/subscriptions/ is not registered for feature Microsoft.Network/AllowPrivateEndpoints required to carry out the requested operation.
+
+  with module.management_log_analytics_workspace.azurerm_private_endpoint.log_analytics_private_endpoint,
+  on management\azure_log_analytics_workspace\main.tf line 26, in resource "azurerm_private_endpoint" "log_analytics_private_endpoint":
+  26: resource "azurerm_private_endpoint" "log_analytics_private_endpoint" {
+
+
+Error: creating/updating Virtual Network Link (Subscription: "3cae269c-98c8-4608-b053-a0b6d44f9974"
+Resource Group Name: "LZ-management-rg"
+Private Dns Zone Name: "privatelink.ods.opinsights.azure.com"
+Virtual Network Link Name: "log-analytics-private-endpoint-dns-link"): performing CreateOrUpdate: unexpected status 404 (404 Not Found) with error: ParentResourceNotFound: Failed to perform 'write' on resource(s) of type 'privateDnsZones/virtualNetworkLinks', because the parent resource '/subscriptions/3cae269c-98c8-4608-b053-a0b6d44f9974/resourceGroups/LZ-management-rg/providers/Microsoft.Network/privateDnsZones/privatelink.ods.opinsights.azure.com' could not be found.
+
+  with module.management_log_analytics_workspace.azurerm_private_dns_zone_virtual_network_link.dns_zone_link,
+  on management\azure_log_analytics_workspace\main.tf line 47, in resource "azurerm_private_dns_zone_virtual_network_link" "dns_zone_link":
+  47: resource "azurerm_private_dns_zone_virtual_network_link" "dns_zone_link" {
+

@@ -188,3 +188,55 @@ variable "vpn_gateway_sku" {
   type        = string
   default     = "VpnGw1"
 }
+
+variable "local_gateway_name" {
+  description = "Name of the Local Gateway"
+  type        = string
+  
+}
+
+variable "on_prem_gateway_ip" {
+  description = "Public IP of the on-premises gateway"
+  type        = string
+  
+}
+
+variable "on_prem_address_spaces" {
+  description = "Address spaces for the on-premises network"
+  type        = list(string)
+}
+
+variable "workspace_name" {
+  description = "Name of the Log Analytics Workspace"
+  type        = string
+  
+}
+
+variable "workspace_sku" {
+  description = "SKU for the Log Analytics Workspace"
+  type        = string
+  default     = "PerGB2018"
+}
+
+variable "workspace_retention_in_days" {
+  description = "Retention period for the Log Analytics Workspace"
+  type        = number
+  default     = 30
+}
+
+variable "workspace_private_endpoint_name" {
+  description = "Name of the Private Endpoint"
+  type        = string
+  
+}
+
+variable "dns_zone_name" {
+  description = "The name of the Private DNS Zone."
+  type        = string
+}
+
+variable "registration_enabled" {
+  description = "Enable automatic registration of VM records."
+  type        = bool
+  default     = false
+}

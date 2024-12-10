@@ -12,7 +12,7 @@ terraform {
   }
 }
 
-# Public IP for Firewall Management
+# Public IP for Azure Firewall Management
 resource "azurerm_public_ip" "azure_firewall_management_public_ip" {
   provider            = azurerm.connectivity
   name                = "${var.azure_firewall_name}-mgmt-pip"
@@ -46,4 +46,5 @@ resource "azurerm_firewall" "azure_firewall" {
   }
 
   tags = var.tags
+  depends_on = [ azurerm_public_ip.azure_firewall_management_public_ip ]
 }

@@ -47,7 +47,8 @@ identity_subnets = [
 ]
 
 management_subnets = [
-  { name = "AzureBastionSubnet", address_prefix = "10.2.1.0/27" },
+  { name = "AzureBastionSubnet", address_prefix = "10.2.1.0/27" },      # (10.2.1.1 - 10.2.1.30)
+  { name = "AzureLogAnalyticsSubnet", address_prefix = "10.2.1.32/27" }, # (10.2.1.33 - 10.2.1.62)
   { name = "monitoring-subnet", address_prefix = "10.2.2.0/24" },
 ]
 
@@ -82,3 +83,23 @@ management_bastion_name            = "management-bastion"
 # Azure VPN Gateway Configurations
 vpn_gateway_name = "vpn-gateway"
 vpn_gateway_sku  = "VpnGw2AZ" # VpnGw2AZ Gen2 Zone Redundent Gateway
+
+# Local Network Gateway Configurations
+local_gateway_name     = "MyLocalNetworkGateway"
+on_prem_gateway_ip     = "203.0.113.10"
+on_prem_address_spaces = [
+  "192.168.1.0/24",
+  "10.0.0.0/16"
+]
+
+dns_zone_name        = "privatedns.azure.local"
+registration_enabled = true
+
+
+# Azure Log Analytics Workspace Configurations
+workspace_name                  = "log-analytics-workspace"
+workspace_sku                   = "PerGB2018"
+workspace_retention_in_days     = 30
+workspace_private_endpoint_name = "log-analytics-private-endpoint"
+
+
