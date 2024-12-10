@@ -2,8 +2,7 @@
 
 location = "West Europe"
 
-
-tenant_id                   = "0000000-0000-0000-0000-000000000000"
+tenant_id                    = "0000000-0000-0000-0000-000000000000"
 
 connectivity_subscription_id = "0000000-0000-0000-0000-000000000000"
 identity_subscription_id     = "0000000-0000-0000-0000-000000000000"
@@ -38,6 +37,7 @@ connectivity_subnets = [
   { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.30.0/24" },
   { name = "AzureApplicationGatewaySubnet", address_prefix = "10.0.4.0/24" },
   { name = "AzureAPIManagementSubnet", address_prefix = "10.0.5.0/28" },
+  { name = "AzureLogAnalyticsSubnet", address_prefix = "10.0.6.0/28" },
   #{ name = "subnet1", address_prefix = "10.0.1.0/26" },    # 64 (59 Usable)  (10.0.1.4 - 10.0.1.62)
   #{ name = "subnet2", address_prefix = "10.0.1.64/26" },   # 64 (59 Usable)  (10.0.1.68 - 10.0.1.126)
   #{ name = "subnet3", address_prefix = "10.0.1.128/29" },  # 8  (3 Usable)   (10.0.1.132 - 10.0.1.134)
