@@ -136,8 +136,8 @@ module "connectivity_security" {
   identity_subnet_ids                 = module.identity_network.subnet_ids
   management_subnet_ids               = module.management_network.subnet_ids
 
-  # Pass Firewall Outputs
-  azure_firewall_private_ip                 = module.connectivity_azure_firewall.azure_firewall_private_ip
+  azure_firewall_name                 = var.azure_firewall_name
+  azure_firewall_private_ip           = module.connectivity_azure_firewall.azure_firewall_private_ip
 
   management_resource_group_name      = var.management_resource_group_name
   identity_resource_group_name        = var.identity_resource_group_name

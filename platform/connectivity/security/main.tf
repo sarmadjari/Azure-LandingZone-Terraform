@@ -16,6 +16,23 @@ terraform {
 }
 
 
+# Dynamically fetch existing Azure Firewall details
+data "azurerm_firewall" "existing_firewall" {
+  provider            = azurerm.connectivity
+  name                = var.azure_firewall_name
+  resource_group_name = var.connectivity_resource_group_name
+}
+
+# Determine Azure Firewall private IP
+# Use a conditional to decide the source of the private IP
+locals {
+  azure_firewall_private_ip = try(
+    data.azurerm_firewall.existing_firewall.ip_configuration[0].private_ip_address,
+    ""
+  )
+}
+
+
 # Route Table for East-West and Forced Tunneling
 # Create a route table for AzureFirewallManagementSubnet with default route to Internet
 resource "azurerm_route_table" "firewall_management_route_table" {
@@ -46,21 +63,21 @@ resource "azurerm_route_table" "connectivity_route_table" {
     name                   = "to-firewall-then-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-then-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-then-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 }
 
@@ -76,21 +93,21 @@ resource "azurerm_route_table" "identity_route_table" {
     name                   = "to-firewall-then-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-then-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-then-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 }
 
@@ -106,21 +123,21 @@ resource "azurerm_route_table" "management_route_table" {
     name                   = "to-firewall-then-connectivity"
     address_prefix         = var.connectivity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-then-identity"
     address_prefix         = var.identity_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 
   route {
     name                   = "to-firewall-then-management"
     address_prefix         = var.management_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.azure_firewall_private_ip
+    next_hop_in_ip_address = local.azure_firewall_private_ip
   }
 }
 

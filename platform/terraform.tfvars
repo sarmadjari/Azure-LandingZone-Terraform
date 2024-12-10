@@ -101,5 +101,3 @@ workspace_name                  = "log-analytics-workspace"
 workspace_sku                   = "PerGB2018"
 workspace_retention_in_days     = 30
 workspace_private_endpoint_name = "log-analytics-private-endpoint"
-
-
