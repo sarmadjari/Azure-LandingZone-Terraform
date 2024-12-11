@@ -52,6 +52,20 @@ module "management_network" {
   tags                = merge(var.shared_tags, { project = "management" })
 }
 
+# Extract Subnets address_prefix
+locals {
+  azure_application_gateway_subnet_prefix = lookup(
+    element([for subnet in var.connectivity_subnets : subnet if subnet.name == "AzureApplicationGatewaySubnet"], 0),
+    "address_prefix",
+    null
+  )
+  azure_firewall_subnet_prefix = lookup(
+    element([for subnet in var.connectivity_subnets : subnet if subnet.name == "AzureFirewallSubnet"], 0),
+    "address_prefix",
+    null
+  )
+}
+
 # Connectivity Azure Firewall Module
 module "connectivity_azure_firewall" {
   source              = "./connectivity/azure_firewall"
@@ -63,19 +77,9 @@ module "connectivity_azure_firewall" {
   azure_sku_tier      = var.azure_sku_tier
   location            = var.location
   resource_group_name = var.connectivity_resource_group_name
-  tags                = merge(var.shared_tags, { project = "connectivity" })
   subnet_ids          = module.connectivity_network.subnet_ids
-
+  tags                = merge(var.shared_tags, { project = "connectivity" })
   depends_on = [module.connectivity_network]
-}
-
-# Extract AzureApplicationGatewaySubnet address_prefix
-locals {
-  azure_application_gateway_subnet_prefix = lookup(
-    element([for subnet in var.connectivity_subnets : subnet if subnet.name == "AzureApplicationGatewaySubnet"], 0),
-    "address_prefix",
-    null
-  )
 }
 
 # Connectivity Application Gateway Module
@@ -169,7 +173,7 @@ module "management_azure_bastion" {
 
 # Azure VPN Gateway Module
 module "connectivity_azure_vpngateway" {
-  source              = "./connectivity/azure_vpngateway"
+  source = "./connectivity/azure_vpngateway"
   providers = {
     azurerm.connectivity = azurerm.connectivity
   }
@@ -198,25 +202,33 @@ module "connectivity_azure_local_network_gateway" {
   depends_on = [module.connectivity_network]
 }
 
-# platform/main.tf
-
+# Azure Private DNS Zone Module
 module "connectivity_azure_private_dns_zone" {
   source = "./connectivity/azure_private_dns_zone"
   providers = {
     azurerm.connectivity = azurerm.connectivity
   }
 
-  dns_zone_name       = var.dns_zone_name
-  resource_group_name = var.connectivity_resource_group_name
-  virtual_network_ids = [
+  dns_zone_name         = var.azure_private_dns_zone_name
+  private_dns_zone_name = var.azure_private_dns_zone_name
+  resource_group_name   = "LZ-connectivity-rg"
+  virtual_network_ids   = [
     module.connectivity_network.vnet_id,
     module.identity_network.vnet_id,
     module.management_network.vnet_id
   ]
-  registration_enabled = var.registration_enabled
-  depends_on = [ module.connectivity_network, module.identity_network, module.management_network ]
+  registration_enabled = true
+
+  depends_on = [
+    module.connectivity_network,
+    module.identity_network,
+    module.management_network
+  ]
 }
 
+
+
+# Azure Log Analytics Workspace Module
 module "management_log_analytics_workspace" {
   source = "./management/azure_log_analytics_workspace"
   providers = {
@@ -230,8 +242,10 @@ module "management_log_analytics_workspace" {
   retention_in_days     = var.workspace_retention_in_days
   private_endpoint_name = var.workspace_private_endpoint_name
   subnet_id             = module.management_network.subnet_ids["AzureLogAnalyticsSubnet"]
+  private_dns_zone_name = module.connectivity_azure_private_dns_zone.dns_zone_name
   private_dns_zone_id   = module.connectivity_azure_private_dns_zone.dns_zone_id
   virtual_network_id    = module.management_network.vnet_id
   tags                  = merge(var.shared_tags, { project = "management" })
   depends_on            = [module.management_network, module.connectivity_azure_private_dns_zone]
 }
+

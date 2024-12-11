@@ -95,7 +95,7 @@ on_prem_address_spaces = [
   "10.0.0.0/16"
 ]
 
-dns_zone_name        = "privatedns.azure.local"
+azure_private_dns_zone_name        = "privatedns.azure.local"
 registration_enabled = true
 
 

@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.12.0"
+      version = "4.13.0"
       configuration_aliases = [azurerm.management]
     }
   }
@@ -37,7 +37,6 @@ resource "azurerm_private_endpoint" "log_analytics_private_endpoint" {
     subresource_names              = ["workspace"]
   }
 
-  # Add the DNS Zone Group to link the existing Private DNS Zone
   private_dns_zone_group {
     name                 = "default"
     private_dns_zone_ids = [var.private_dns_zone_id]
@@ -48,7 +47,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_zone_link" {
   provider              = azurerm.management
   name                  = "${var.private_endpoint_name}-dns-link"
   resource_group_name   = var.resource_group_name
-  private_dns_zone_name = "privatelink.ods.opinsights.azure.com"
+  private_dns_zone_name = var.private_dns_zone_name
   virtual_network_id    = var.virtual_network_id
   registration_enabled  = false
 }

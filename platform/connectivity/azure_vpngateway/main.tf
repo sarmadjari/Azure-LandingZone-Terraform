@@ -4,12 +4,18 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.12.0"
+      version = "4.13.0"
       configuration_aliases = [
         azurerm.connectivity
       ]
     }
   }
+}
+
+data "azurerm_virtual_network_gateway" "existing_vpn_gateway" {
+  provider            = azurerm.connectivity
+  name                = var.vpn_gateway_name
+  resource_group_name = var.resource_group_name
 }
 
 resource "azurerm_public_ip" "vpn_gateway_pip" {
@@ -20,7 +26,12 @@ resource "azurerm_public_ip" "vpn_gateway_pip" {
   allocation_method   = "Static"
   sku                 = "Standard"
   zones               = ["1", "2", "3"]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
+
 
 resource "azurerm_virtual_network_gateway" "vpn_gateway" {
   provider                  = azurerm.connectivity
@@ -30,8 +41,6 @@ resource "azurerm_virtual_network_gateway" "vpn_gateway" {
   type                      = "Vpn"
   vpn_type                  = "RouteBased"
   sku                       = var.vpn_gateway_sku
-  # active_active             = false
-  # enable_bgp                = false
 
   ip_configuration {
     name                          = "vnetGatewayConfig"
@@ -40,4 +49,14 @@ resource "azurerm_virtual_network_gateway" "vpn_gateway" {
   }
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      ip_configuration,
+      sku
+    ]
+  }
+  depends_on = [
+    azurerm_public_ip.vpn_gateway_pip
+  ]
 }

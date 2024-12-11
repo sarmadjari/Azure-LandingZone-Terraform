@@ -31,3 +31,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "use_existing_gateway" {
+  description = "Set to true if an existing VPN gateway should be used."
+  type        = bool
+  default     = false
+}

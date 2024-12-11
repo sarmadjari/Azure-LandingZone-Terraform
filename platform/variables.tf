@@ -236,7 +236,7 @@ variable "workspace_private_endpoint_name" {
   
 }
 
-variable "dns_zone_name" {
+variable "azure_private_dns_zone_name" {
   description = "The name of the Private DNS Zone."
   type        = string
 }
