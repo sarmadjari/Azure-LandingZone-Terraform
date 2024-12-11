@@ -55,7 +55,6 @@ resource "azurerm_virtual_network_peering" "connectivity_to_identity" {
 
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
   depends_on = [
     azurerm_virtual_network.vnet,
     azurerm_subnet.subnet
@@ -72,7 +71,6 @@ resource "azurerm_virtual_network_peering" "identity_to_connectivity" {
 
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
 }
 
 # Peer connectivity-vnet with management-vnet
@@ -82,14 +80,10 @@ resource "azurerm_virtual_network_peering" "connectivity_to_management" {
   resource_group_name       = var.resource_group_name
   virtual_network_name      = azurerm_virtual_network.vnet.name
   remote_virtual_network_id = var.management_vnet_id
-
+  allow_forwarded_traffic   = true
   allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
-  depends_on = [
-    azurerm_virtual_network.vnet,
-    azurerm_subnet.subnet
-  ]
+
+  depends_on = [azurerm_virtual_network_peering.management_to_connectivity]
 }
 
 # Peer management-vnet with connectivity-vnet (reverse direction)
@@ -99,8 +93,7 @@ resource "azurerm_virtual_network_peering" "management_to_connectivity" {
   resource_group_name       = var.management_vnet_rg_name
   virtual_network_name      = var.management_vnet_name
   remote_virtual_network_id = azurerm_virtual_network.vnet.id
-
+  allow_forwarded_traffic   = true
   allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
 }
+
