@@ -28,6 +28,7 @@ resource "azurerm_bastion_host" "bastion" {
   name                = var.bastion_name
   location            = var.location
   resource_group_name = var.resource_group_name
+  zones               = ["1", "2", "3"]
 
   ip_configuration {
     name                 = "bastion-ip-config"
