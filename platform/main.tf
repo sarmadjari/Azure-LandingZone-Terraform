@@ -212,7 +212,7 @@ module "connectivity_azure_private_dns_zone" {
 
   dns_zone_name         = var.azure_private_dns_zone_name
   private_dns_zone_name = var.azure_private_dns_zone_name
-  resource_group_name   = "LZ-connectivity-rg"
+  resource_group_name   = var.connectivity_resource_group_name
   virtual_network_ids   = [
     module.connectivity_network.vnet_id,
     module.identity_network.vnet_id,

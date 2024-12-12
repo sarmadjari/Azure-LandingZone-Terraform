@@ -16,10 +16,15 @@ terraform {
 }
 
 
-resource "null_resource" "firewall_ready" {
-  triggers = {
-    firewall_id = var.azure_firewall_id
-  }
+# Wait for a certain amount of time after the firewall is created
+# to ensure it's fully provisioned in Azure before applying route tables.
+resource "time_sleep" "wait_for_firewall" {
+  # This ensures the firewall resource is created first.
+  depends_on = [var.azure_firewall_id]
+
+  # Adjust the duration as needed (in seconds).
+  # For example, wait 3 minutes:
+  create_duration = "180s"
 }
 
 
@@ -155,7 +160,8 @@ resource "azurerm_subnet_route_table_association" "firewall_management_subnet" {
   provider       = azurerm.connectivity
   subnet_id      = var.connectivity_subnet_ids["AzureFirewallManagementSubnet"]
   route_table_id = azurerm_route_table.firewall_management_route_table.id
-  depends_on     = [null_resource.firewall_ready]
+  # depends_on     = [null_resource.firewall_ready]
+  depends_on     = [time_sleep.wait_for_firewall]
 }
 
 
