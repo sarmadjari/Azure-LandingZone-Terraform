@@ -60,8 +60,6 @@ azure_firewall_name = "internal-firewall"  # Define the desired name for the Azu
 azure_sku_name      = "AZFW_VNet"
 azure_sku_tier      = "Premium"
 
-
-
 # Application Gateway Configurations
 appgw_name                 = "app-gateway"
 

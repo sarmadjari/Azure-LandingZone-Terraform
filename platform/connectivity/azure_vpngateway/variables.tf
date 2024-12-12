@@ -32,8 +32,8 @@ variable "tags" {
   default     = {}
 }
 
-variable "use_existing_gateway" {
-  description = "Set to true if an existing VPN gateway should be used."
-  type        = bool
+variable "existing_gateway" {
   default     = false
+  type        = bool
+  description = "Set to true if the Virtual Network Gateway already exists"
 }

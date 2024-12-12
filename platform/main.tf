@@ -250,4 +250,3 @@ module "management_log_analytics_workspace" {
   # depends_on            = [module.management_network, module.connectivity_azure_private_dns_zone]
   depends_on            = [module.management_network]
 }
-

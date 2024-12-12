@@ -13,6 +13,7 @@ terraform {
 }
 
 data "azurerm_virtual_network_gateway" "existing_vpn_gateway" {
+  count               = var.existing_gateway ? 1 : 0
   provider            = azurerm.connectivity
   name                = var.vpn_gateway_name
   resource_group_name = var.resource_group_name
@@ -32,8 +33,8 @@ resource "azurerm_public_ip" "vpn_gateway_pip" {
   }
 }
 
-
 resource "azurerm_virtual_network_gateway" "vpn_gateway" {
+  count                     = var.existing_gateway ? 0 : 1
   provider                  = azurerm.connectivity
   name                      = var.vpn_gateway_name
   location                  = var.location

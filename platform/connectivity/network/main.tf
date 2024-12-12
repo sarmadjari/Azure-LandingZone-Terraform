@@ -96,4 +96,3 @@ resource "azurerm_virtual_network_peering" "management_to_connectivity" {
   allow_forwarded_traffic   = true
   allow_virtual_network_access = true
 }
-
