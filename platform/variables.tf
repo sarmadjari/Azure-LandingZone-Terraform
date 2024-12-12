@@ -230,11 +230,13 @@ variable "workspace_retention_in_days" {
   default     = 30
 }
 
+/*
 variable "workspace_private_endpoint_name" {
   description = "Name of the Private Endpoint"
   type        = string
   
 }
+*/
 
 variable "azure_private_dns_zone_name" {
   description = "The name of the Private DNS Zone."

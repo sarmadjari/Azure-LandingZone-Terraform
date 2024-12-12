@@ -25,6 +25,7 @@ variable "retention_in_days" {
   default     = 30
 }
 
+/*
 variable "private_endpoint_name" {
   description = "The name of the private endpoint for the Log Analytics Workspace."
   type        = string
@@ -49,7 +50,7 @@ variable "virtual_network_id" {
   description = "The ID of the virtual network for the private endpoint."
   type        = string
 }
-
+*/
 variable "tags" {
   description = "Tags to apply to the resources."
   type        = map(string)

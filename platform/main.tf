@@ -240,12 +240,13 @@ module "management_log_analytics_workspace" {
   resource_group_name   = var.management_resource_group_name
   sku                   = var.workspace_sku
   retention_in_days     = var.workspace_retention_in_days
-  private_endpoint_name = var.workspace_private_endpoint_name
-  subnet_id             = module.management_network.subnet_ids["AzureLogAnalyticsSubnet"]
-  private_dns_zone_name = module.connectivity_azure_private_dns_zone.dns_zone_name
-  private_dns_zone_id   = module.connectivity_azure_private_dns_zone.dns_zone_id
-  virtual_network_id    = module.management_network.vnet_id
+  # private_endpoint_name = var.workspace_private_endpoint_name
+  # subnet_id             = module.management_network.subnet_ids["AzureLogAnalyticsSubnet"]
+  # private_dns_zone_name = module.connectivity_azure_private_dns_zone.dns_zone_name
+  # private_dns_zone_id   = module.connectivity_azure_private_dns_zone.dns_zone_id
+  # virtual_network_id    = module.management_network.vnet_id
   tags                  = merge(var.shared_tags, { project = "management" })
-  depends_on            = [module.management_network, module.connectivity_azure_private_dns_zone]
+  # depends_on            = [module.management_network, module.connectivity_azure_private_dns_zone]
+  depends_on            = [module.management_network]
 }
 

@@ -20,6 +20,22 @@ resource "azurerm_public_ip" "appgw_public_ip" {
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
+  zones = var.zones
+}
+
+# WAF Policy
+resource "azurerm_web_application_firewall_policy" "appgw_waf_policy" {
+  provider            = azurerm.connectivity
+  name                = "${var.appgw_name}-waf-policy"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  managed_rules {
+    managed_rule_set {
+      type    = "OWASP"
+      version = var.waf_rule_set_version
+    }
+  }
 }
 
 # Application Gateway
@@ -28,6 +44,8 @@ resource "azurerm_application_gateway" "app_gateway" {
   name                = var.appgw_name
   location            = var.location
   resource_group_name = var.resource_group_name
+
+  zones = var.zones
 
   sku {
     name     = var.appgw_sku_name
@@ -57,11 +75,8 @@ resource "azurerm_application_gateway" "app_gateway" {
     public_ip_address_id = azurerm_public_ip.appgw_public_ip.id
   }
 
-  # Define the backend pool that will be referenced by the routing rules.
-  # This pool is initially empty and will have no addresses.
   backend_address_pool {
     name = "appgw-backend-pool"
-    # No addresses added yet. Add them later manually or via updated Terraform code.
   }
 
   backend_http_settings {
@@ -104,12 +119,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     priority                   = 101
   }
 
-  waf_configuration {
-    enabled          = true
-    firewall_mode    = var.waf_mode
-    rule_set_type    = "OWASP"
-    rule_set_version = var.waf_rule_set_version
-  }
+  firewall_policy_id = azurerm_web_application_firewall_policy.appgw_waf_policy.id
 
   tags = var.tags
 }

@@ -21,6 +21,8 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
 
   tags = var.tags
 }
+/*
+# Will not create a Private Endpoint for the Log Analytics Workspace at this moment
 
 # Create a Private Endpoint for the Log Analytics Workspace
 resource "azurerm_private_endpoint" "log_analytics_private_endpoint" {
@@ -51,3 +53,5 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_zone_link" {
   virtual_network_id    = var.virtual_network_id
   registration_enabled  = false
 }
+
+*/

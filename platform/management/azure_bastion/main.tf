@@ -10,6 +10,19 @@ terraform {
   }
 }
 
+# Azure Public IP for Bastion
+resource "azurerm_public_ip" "bastion_pip" {
+  provider            = azurerm.management
+  name                = "${var.bastion_name}-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  zones               = ["1", "2", "3"]
+  tags                = var.tags
+}
+
+# Azure Bastion Host
 resource "azurerm_bastion_host" "bastion" {
   provider            = azurerm.management
   name                = var.bastion_name
@@ -23,14 +36,4 @@ resource "azurerm_bastion_host" "bastion" {
   }
   tags = var.tags
   depends_on = [azurerm_public_ip.bastion_pip]
-}
-
-resource "azurerm_public_ip" "bastion_pip" {
-  provider            = azurerm.management
-  name                = "${var.bastion_name}-pip"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-  tags                = var.tags
 }

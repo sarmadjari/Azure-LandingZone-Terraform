@@ -25,6 +25,10 @@ output "subnet_ids_by_name" {
   value       = { for k, v in azurerm_subnet.subnet : v.name => v.id }
 }
 
+output "firewall_subnet_id" {
+  description = "The ID of the Azure Firewall Subnet"
+  value       = azurerm_subnet.subnet["AzureFirewallSubnet"].id
+}
 
 output "firewall_management_subnet_id" {
   description = "The ID of the Azure Firewall Management subnet"

@@ -37,7 +37,7 @@ connectivity_subnets = [
   { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.30.0/24" },
   { name = "AzureApplicationGatewaySubnet", address_prefix = "10.0.4.0/24" },
   { name = "AzureAPIManagementSubnet", address_prefix = "10.0.5.0/28" },
-  { name = "AzureLogAnalyticsSubnet", address_prefix = "10.0.6.0/28" },
+  # { name = "AzureLogAnalyticsSubnet", address_prefix = "10.0.6.0/28" },
   #{ name = "subnet1", address_prefix = "10.0.1.0/26" },    # 64 (59 Usable)  (10.0.1.4 - 10.0.1.62)
   #{ name = "subnet2", address_prefix = "10.0.1.64/26" },   # 64 (59 Usable)  (10.0.1.68 - 10.0.1.126)
   #{ name = "subnet3", address_prefix = "10.0.1.128/29" },  # 8  (3 Usable)   (10.0.1.132 - 10.0.1.134)
@@ -51,7 +51,7 @@ identity_subnets = [
 
 management_subnets = [
   { name = "AzureBastionSubnet", address_prefix = "10.2.1.0/27" },      # (10.2.1.1 - 10.2.1.30)
-  { name = "AzureLogAnalyticsSubnet", address_prefix = "10.2.1.32/27" }, # (10.2.1.33 - 10.2.1.62)
+  # { name = "AzureLogAnalyticsSubnet", address_prefix = "10.2.1.32/27" }, # (10.2.1.33 - 10.2.1.62)
   { name = "monitoring-subnet", address_prefix = "10.2.2.0/24" },
 ]
 
@@ -95,7 +95,7 @@ on_prem_address_spaces = [
   "10.0.0.0/16"
 ]
 
-azure_private_dns_zone_name        = "privatedns.azure.local"
+azure_private_dns_zone_name        = "myCompany.azure"
 registration_enabled = true
 
 
@@ -103,4 +103,4 @@ registration_enabled = true
 workspace_name                  = "log-analytics-workspace"
 workspace_sku                   = "PerGB2018"
 workspace_retention_in_days     = 30
-workspace_private_endpoint_name = "log-analytics-private-endpoint"
+# workspace_private_endpoint_name = "log-analytics-private-endpoint"

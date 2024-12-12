@@ -78,3 +78,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "zones" {
+  description = "Availability Zones for the Application Gateway"
+  type        = list(string)
+  default     = ["1", "2", "3"]
+}
