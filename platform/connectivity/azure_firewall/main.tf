@@ -36,11 +36,13 @@ resource "azurerm_public_ip" "azure_firewall_management_public_ip" {
   tags                = var.tags
 }
 
+# Azure Firewall Policy
 resource "azurerm_firewall_policy" "policy" {
   provider            = azurerm.connectivity
   name                = "${var.azure_firewall_name}-policy"
   location            = var.location
   resource_group_name = var.resource_group_name
+  sku                 = "Premium"
   tags                = var.tags
 }
 
