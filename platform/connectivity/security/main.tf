@@ -16,6 +16,13 @@ terraform {
 }
 
 
+resource "null_resource" "firewall_ready" {
+  triggers = {
+    firewall_id = var.azure_firewall_id
+  }
+}
+
+
 # Dynamically fetch existing Azure Firewall details
 data "azurerm_firewall" "existing_firewall" {
   provider            = azurerm.connectivity
@@ -148,6 +155,7 @@ resource "azurerm_subnet_route_table_association" "firewall_management_subnet" {
   provider       = azurerm.connectivity
   subnet_id      = var.connectivity_subnet_ids["AzureFirewallManagementSubnet"]
   route_table_id = azurerm_route_table.firewall_management_route_table.id
+  depends_on     = [null_resource.firewall_ready]
 }
 
 

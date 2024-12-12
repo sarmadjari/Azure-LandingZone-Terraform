@@ -113,6 +113,11 @@ variable "azure_firewall_name" {
   type        = string
 }
 
+variable "azure_firewall_id" {
+  description = "The ID of the Azure Firewall resource."
+  type        = string
+}
+
 variable "azure_sku_name" {
   description = "Firewall SKU Name"
   type        = string

@@ -64,3 +64,8 @@ variable "azure_firewall_private_ip" {
   description = "The private IP of the Azure Firewall"
   type        = string
 }
+
+variable "azure_firewall_id" {
+  description = "The ID of the Azure Firewall resource."
+  type        = string
+}

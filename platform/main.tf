@@ -141,6 +141,7 @@ module "connectivity_security" {
   management_subnet_ids               = module.management_network.subnet_ids
 
   azure_firewall_name                 = var.azure_firewall_name
+  azure_firewall_id                   = module.connectivity_azure_firewall.azure_firewall_id
   azure_firewall_private_ip           = module.connectivity_azure_firewall.azure_firewall_private_ip
 
   management_resource_group_name      = var.management_resource_group_name
