@@ -2,15 +2,26 @@
 
 
 # Azure Connectivity Resource Group Module
-module "connectivity_resource_group" {
+module "connectivity_external_resource_group" {
   source = "./connectivity/azure_resource_group"
   providers = {
     azurerm.connectivity = azurerm.connectivity
   }
   location            = var.location
-  resource_group_name = var.connectivity_resource_group_name
+  resource_group_name = var.connectivity_external_resource_group_name
   tags                = merge(var.shared_tags, { project = "connectivity" })
 }
+
+module "connectivity_internal_resource_group" {
+  source = "./connectivity/azure_resource_group"
+  providers = {
+    azurerm.connectivity = azurerm.connectivity
+  }
+  location            = var.location
+  resource_group_name = var.connectivity_internal_resource_group_name
+  tags                = merge(var.shared_tags, { project = "connectivity" })
+}
+
 
 # Connectivity Extrenal Network Module
 module "connectivity_external_network" {
@@ -20,11 +31,11 @@ module "connectivity_external_network" {
   }
   vnet_name           = var.connectivity_external_vnet_name
   location            = var.location
-  resource_group_name = var.connectivity_resource_group_name
+  resource_group_name = var.connectivity_external_resource_group_name
   address_space       = var.connectivity_external_vnet_address_space
   subnets             = var.connectivity_external_subnets
   tags                = merge(var.shared_tags, { project = "connectivity" })
-  depends_on = [ module.connectivity_resource_group ]
+  depends_on = [ module.connectivity_external_resource_group ]
 }
 
 # Connectivity Internal Network Module
@@ -37,14 +48,14 @@ module "connectivity_internal_network" {
   }
   vnet_name           = var.connectivity_internal_vnet_name
   location            = var.location
-  resource_group_name = var.connectivity_resource_group_name
+  resource_group_name = var.connectivity_internal_resource_group_name
   address_space       = var.connectivity_internal_vnet_address_space
   subnets             = var.connectivity_internal_subnets
   tags                = merge(var.shared_tags, { project = "connectivity" })
 
   external_vnet_name    = module.connectivity_external_network.vnet_name
   external_vnet_id      = module.connectivity_external_network.vnet_id
-  external_vnet_rg_name = var.connectivity_resource_group_name
+  external_vnet_rg_name = var.connectivity_internal_resource_group_name
 
   management_vnet_name    = module.management_network.vnet_name
   management_vnet_id      = module.management_network.vnet_id
@@ -54,7 +65,7 @@ module "connectivity_internal_network" {
   identity_vnet_id        = module.identity_network.vnet_id
   identity_vnet_rg_name   = var.identity_resource_group_name
 
-  depends_on = [ module.connectivity_resource_group ]
+  depends_on = [ module.connectivity_internal_resource_group ]
 }
 
 # Identity Network Module
@@ -109,7 +120,7 @@ module "connectivity_external_azure_firewall" {
   azure_sku_name                    = var.azure_sku_name
   azure_sku_tier                    = var.azure_sku_tier
   location                          = var.location
-  resource_group_name               = var.connectivity_resource_group_name
+  resource_group_name               = var.connectivity_external_resource_group_name
   connectivity_external_subnet_ids  = module.connectivity_external_network.subnet_ids
   shared_tags                       = var.shared_tags
   depends_on                        = [module.connectivity_external_network]
@@ -125,7 +136,7 @@ module "connectivity_internal_azure_firewall" {
   azure_sku_name                  = var.azure_sku_name
   azure_sku_tier                  = var.azure_sku_tier
   location                        = var.location
-  resource_group_name             = var.connectivity_resource_group_name
+  resource_group_name             = var.connectivity_internal_resource_group_name
   connectivity_internal_subnet_ids = module.connectivity_internal_network.subnet_ids
   shared_tags                     = var.shared_tags
   depends_on                      = [module.connectivity_internal_network]
@@ -139,7 +150,7 @@ module "connectivity_azure_application_gateway" {
   }
   appgw_name                = var.appgw_name
   location                  = var.location
-  resource_group_name       = var.connectivity_resource_group_name
+  resource_group_name       = var.connectivity_internal_resource_group_name
   subnet_id                 = module.connectivity_internal_network.subnet_ids["AzureApplicationGatewaySubnet"]
   private_ip_address        = cidrhost(local.azure_application_gateway_subnet_prefix, 4) # Example: Get 4th usable IP
   waf_mode                  = var.waf_mode
@@ -156,7 +167,7 @@ module "connectivity_azure_api_management" {
   }
   api_management_name         = var.api_management_name
   location                    = var.location
-  resource_group_name         = var.connectivity_resource_group_name
+  resource_group_name         = var.connectivity_internal_resource_group_name
   sku_name                    = var.api_management_sku
   subnet_id                   = module.connectivity_internal_network.subnet_ids["AzureApiManagement"]
   publisher_name              = var.api_management_publisher_name
@@ -180,7 +191,7 @@ module "connectivity_security" {
     azurerm.management   = azurerm.management
   }
   location                            = var.location
-  connectivity_resource_group_name    = var.connectivity_resource_group_name
+  connectivity_resource_group_name    = var.connectivity_internal_resource_group_name
   connectivity_internal_vnet_address_space     = var.connectivity_internal_vnet_address_space
   identity_vnet_address_space         = var.identity_vnet_address_space
   management_vnet_address_space       = var.management_vnet_address_space
@@ -230,11 +241,11 @@ module "connectivity_azure_vpngateway" {
   }
   vpn_gateway_name        = var.vpn_gateway_name
   location                = var.location
-  resource_group_name     = var.connectivity_resource_group_name
-  gateway_subnet_id       = module.connectivity_external_network.subnet_ids["GatewaySubnet"]
+  resource_group_name     = var.connectivity_internal_resource_group_name
+  gateway_subnet_id       = module.connectivity_internal_network.subnet_ids["GatewaySubnet"]
   vpn_gateway_sku         = var.vpn_gateway_sku
   tags                    = merge(var.shared_tags, { project = "connectivity" })
-  depends_on = [module.connectivity_external_network]
+  depends_on = [module.connectivity_internal_network]
 }
 
 
@@ -246,11 +257,11 @@ module "connectivity_azure_local_network_gateway" {
   }
   local_gateway_name      = var.local_gateway_name
    location               = var.location
-  resource_group_name     = var.connectivity_resource_group_name
+  resource_group_name     = var.connectivity_internal_resource_group_name
   on_prem_gateway_ip      = var.on_prem_gateway_ip
   on_prem_address_spaces  = var.on_prem_address_spaces
   tags                    = merge(var.shared_tags, { project = "connectivity" })
-  depends_on = [module.connectivity_external_network]
+  depends_on = [module.connectivity_internal_network]
 }
 
 # Azure Private DNS Zone Module
@@ -262,7 +273,7 @@ module "connectivity_azure_private_dns_zone" {
 
   dns_zone_name         = var.azure_private_dns_zone_name
   private_dns_zone_name = var.azure_private_dns_zone_name
-  resource_group_name   = var.connectivity_resource_group_name
+  resource_group_name   = var.connectivity_internal_resource_group_name
   virtual_network_ids   = [
     module.connectivity_internal_network.vnet_id,
     module.identity_network.vnet_id,

@@ -15,7 +15,8 @@ shared_tags = {
 }
 
 # Resource Group Names
-connectivity_resource_group_name = "LZ-connectivity-rg"
+connectivity_external_resource_group_name = "LZ-connectivity-external-rg"
+connectivity_internal_resource_group_name = "LZ-connectivity-internal-rg"
 identity_resource_group_name     = "LZ-identity-rg"
 management_resource_group_name   = "LZ-management-rg"
 
@@ -35,13 +36,13 @@ management_vnet_address_space   = ["10.2.0.0/16"]
 
 # Subnet Definitions
 connectivity_external_subnets = [
-  { name = "GatewaySubnet", address_prefix = "10.10.2.0/24" },
   { name = "AzureFirewallSubnet", address_prefix = "10.10.3.0/24" },
   { name = "AzureFirewallManagementSubnet", address_prefix = "10.10.30.0/24" },
 
 ]
 
 connectivity_internal_subnets = [
+  { name = "GatewaySubnet", address_prefix = "10.0.2.0/24" },
   { name = "AzureFirewallSubnet", address_prefix = "10.0.3.0/24" },
   { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.30.0/24" },
   { name = "AzureApplicationGatewaySubnet", address_prefix = "10.0.4.0/24" },

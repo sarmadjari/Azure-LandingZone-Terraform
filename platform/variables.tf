@@ -29,7 +29,12 @@ variable "management_subscription_id" {
 }
 
 # Resource Group Names
-variable "connectivity_resource_group_name" {
+variable "connectivity_external_resource_group_name" {
+  description = "Resource Group for Connectivity resources"
+  type        = string
+}
+
+variable "connectivity_internal_resource_group_name" {
   description = "Resource Group for Connectivity resources"
   type        = string
 }
