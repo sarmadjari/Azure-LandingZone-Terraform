@@ -10,7 +10,7 @@ variable "connectivity_resource_group_name" {
   type        = string
 }
 
-variable "connectivity_vnet_address_space" {
+variable "connectivity_internal_vnet_address_space" {
   description = "Address space for the Connectivity VNet"
   type        = list(string)
 }

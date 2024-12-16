@@ -25,13 +25,12 @@ variable "azure_sku_tier" {
   type        = string
 }
 
-variable "subnet_ids" {
-  description = "Map of subnet names to IDs"
+variable "connectivity_internal_subnet_ids" {
+  description = "Map of subnet names to IDs in the Connectivity VNet"
   type        = map(string)
 }
 
-variable "tags" {
-  description = "Tags to apply to resources"
+variable "shared_tags" {
+  description = "Shared tags for all resources"
   type        = map(string)
-  default     = {}
 }

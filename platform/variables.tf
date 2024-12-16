@@ -51,7 +51,12 @@ variable "shared_tags" {
 }
 
 # VNets Names
-variable "connectivity_vnet_name" {
+variable "connectivity_external_vnet_name" {
+  description = "Resource Group for Connectivity resources"
+  type        = string
+}
+
+variable "connectivity_internal_vnet_name" {
   description = "Resource Group for Connectivity resources"
   type        = string
 }
@@ -67,7 +72,12 @@ variable "management_vnet_name" {
 }
 
 # Address Spaces for VNets
-variable "connectivity_vnet_address_space" {
+variable "connectivity_external_vnet_address_space" {
+  description = "Address space for Connectivity VNet"
+  type        = list(string)
+}
+
+variable "connectivity_internal_vnet_address_space" {
   description = "Address space for Connectivity VNet"
   type        = list(string)
 }
@@ -83,8 +93,16 @@ variable "management_vnet_address_space" {
 }
 
 # Subnets
-variable "connectivity_subnets" {
-  description = "Subnets for Connectivity VNet"
+variable "connectivity_external_subnets" {
+  description = "Subnets for Connectivity External VNet"
+  type        = list(object({
+    name           = string
+    address_prefix = string
+  }))
+}
+
+variable "connectivity_internal_subnets" {
+  description = "Subnets for Connectivity Internal VNet"
   type        = list(object({
     name           = string
     address_prefix = string
@@ -107,13 +125,17 @@ variable "management_subnets" {
   }))
 }
 
-# Azure Firewall Variables
-variable "azure_firewall_name" {
-  description = "The name of the Azure Firewall"
+# Extrenal Azure Firewall Variables
+variable "azure_firewall_external_name" {
+  description = "The name of the Extrenal Azure Firewall"
   type        = string
 }
 
-
+# Internal Azure Firewall Variables
+variable "azure_firewall_internal_name" {
+  description = "The name of the Internal Azure Firewall"
+  type        = string
+}
 
 variable "azure_sku_name" {
   description = "Firewall SKU Name"

@@ -20,8 +20,12 @@ identity_resource_group_name     = "LZ-identity-rg"
 management_resource_group_name   = "LZ-management-rg"
 
 # IP Ranges for VNets and Subnets
-connectivity_vnet_name          = "connectivity-vnet"
-connectivity_vnet_address_space = ["10.0.0.0/16"]
+connectivity_external_vnet_name          = "connectivity-external-vnet"
+connectivity_external_vnet_address_space = ["10.10.0.0/16"]
+
+connectivity_internal_vnet_name          = "connectivity-internal-vnet"
+connectivity_internal_vnet_address_space = ["10.0.0.0/16"]
+
 
 identity_vnet_name              = "identity-vnet"
 identity_vnet_address_space     = ["10.1.0.0/16"]
@@ -30,18 +34,18 @@ management_vnet_name            = "management-vnet"
 management_vnet_address_space   = ["10.2.0.0/16"]
 
 # Subnet Definitions
-connectivity_subnets = [
-  { name = "connectivity-management-subnet", address_prefix = "10.0.10.0/24" },
-  { name = "GatewaySubnet", address_prefix = "10.0.2.0/24" },
+connectivity_external_subnets = [
+  { name = "GatewaySubnet", address_prefix = "10.10.2.0/24" },
+  { name = "AzureFirewallSubnet", address_prefix = "10.10.3.0/24" },
+  { name = "AzureFirewallManagementSubnet", address_prefix = "10.10.30.0/24" },
+
+]
+
+connectivity_internal_subnets = [
   { name = "AzureFirewallSubnet", address_prefix = "10.0.3.0/24" },
   { name = "AzureFirewallManagementSubnet", address_prefix = "10.0.30.0/24" },
   { name = "AzureApplicationGatewaySubnet", address_prefix = "10.0.4.0/24" },
-  { name = "AzureAPIManagementSubnet", address_prefix = "10.0.5.0/28" },
-  # { name = "AzureLogAnalyticsSubnet", address_prefix = "10.0.6.0/28" },
-  #{ name = "subnet1", address_prefix = "10.0.1.0/26" },    # 64 (59 Usable)  (10.0.1.4 - 10.0.1.62)
-  #{ name = "subnet2", address_prefix = "10.0.1.64/26" },   # 64 (59 Usable)  (10.0.1.68 - 10.0.1.126)
-  #{ name = "subnet3", address_prefix = "10.0.1.128/29" },  # 8  (3 Usable)   (10.0.1.132 - 10.0.1.134)
-  #{ name = "subnet4", address_prefix = "10.0.1.144/28" },  # 16 (11 Usable)  (10.0.1.148 - 10.0.1.158)
+  { name = "AzureApiManagement", address_prefix = "10.0.5.0/27" }, # Minimum: /27 (32 addresses) Recommended: /24 (256 addresses) - to accommodate scaling of API Management instance
 ]
 
 identity_subnets = [
@@ -56,9 +60,11 @@ management_subnets = [
 ]
 
 # Azure Firewall Configurations
-azure_firewall_name = "internal-firewall"  # Define the desired name for the Azure Firewall here
-azure_sku_name      = "AZFW_VNet"
-azure_sku_tier      = "Premium"
+azure_firewall_external_name  = "external-firewall"  # Define the desired name for the External Azure Firewall here
+azure_firewall_internal_name  = "internal-firewall"  # Define the desired name for the Internal Azure Firewall here
+
+azure_sku_name                = "AZFW_VNet"
+azure_sku_tier                = "Premium"
 
 # Application Gateway Configurations
 appgw_name                 = "app-gateway"

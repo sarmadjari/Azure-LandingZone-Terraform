@@ -42,7 +42,7 @@ variable "tags" {
 }
 
 # Address Spaces for VNets
-variable "connectivity_vnet_address_space" {
+variable "connectivity_internal_vnet_address_space" {
   description = "Address space for Connectivity VNet"
   type        = list(string)
 }

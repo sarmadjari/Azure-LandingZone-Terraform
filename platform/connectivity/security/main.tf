@@ -15,19 +15,6 @@ terraform {
   }
 }
 
-
-# Wait for a certain amount of time after the firewall is created
-# to ensure it's fully provisioned in Azure before applying route tables.
-resource "time_sleep" "wait_for_firewall" {
-  # This ensures the firewall resource is created first.
-  depends_on = [var.azure_firewall_id]
-
-  # Adjust the duration as needed (in seconds).
-  # For example, wait 3 minutes:
-  create_duration = "180s"
-}
-
-
 # Dynamically fetch existing Azure Firewall details
 data "azurerm_firewall" "existing_firewall" {
   provider            = azurerm.connectivity
@@ -46,23 +33,6 @@ locals {
 
 
 # Route Table for East-West and Forced Tunneling
-# Create a route table for AzureFirewallManagementSubnet with default route to Internet
-resource "azurerm_route_table" "firewall_management_route_table" {
-  provider            = azurerm.connectivity
-  name                = "firewall-management-udr"
-  bgp_route_propagation_enabled = false
-  location            = var.location
-  resource_group_name = var.connectivity_resource_group_name
-  tags                = merge(var.shared_tags, { project = "connectivity" })
-
-  # This route ensures Azure Firewall Management Subnet can communicate with the control plane for essential operations (logging, updates, and threat intelligence).
-  route {
-    name                   = "default-route"
-    address_prefix         = "0.0.0.0/0"
-    next_hop_type          = "Internet"
-  }
-}
-
 # UDR for Connectivity VNet
 resource "azurerm_route_table" "connectivity_route_table" {
   provider            = azurerm.connectivity
@@ -73,7 +43,7 @@ resource "azurerm_route_table" "connectivity_route_table" {
 
   route {
     name                   = "to-firewall-then-connectivity"
-    address_prefix         = var.connectivity_vnet_address_space[0]
+    address_prefix         = var.connectivity_internal_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = local.azure_firewall_private_ip
   }
@@ -103,7 +73,7 @@ resource "azurerm_route_table" "identity_route_table" {
 
   route {
     name                   = "to-firewall-then-connectivity"
-    address_prefix         = var.connectivity_vnet_address_space[0]
+    address_prefix         = var.connectivity_internal_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = local.azure_firewall_private_ip
   }
@@ -133,7 +103,7 @@ resource "azurerm_route_table" "management_route_table" {
 
   route {
     name                   = "to-firewall-then-connectivity"
-    address_prefix         = var.connectivity_vnet_address_space[0]
+    address_prefix         = var.connectivity_internal_vnet_address_space[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = local.azure_firewall_private_ip
   }
@@ -154,16 +124,6 @@ resource "azurerm_route_table" "management_route_table" {
 }
 
 # Associate Route Tables to Subnets
-
-# Associate the firewall management route table with AzureFirewallManagementSubnet
-resource "azurerm_subnet_route_table_association" "firewall_management_subnet" {
-  provider       = azurerm.connectivity
-  subnet_id      = var.connectivity_subnet_ids["AzureFirewallManagementSubnet"]
-  route_table_id = azurerm_route_table.firewall_management_route_table.id
-  # depends_on     = [null_resource.firewall_ready]
-  depends_on     = [time_sleep.wait_for_firewall]
-}
-
 
 # For Connectivity Subnets
 # Associate Route Tables to Subnets, excluding AzureFirewallManagementSubnet and AzureFirewallSubnet

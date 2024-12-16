@@ -51,7 +51,7 @@ resource "azurerm_network_security_group" "apim_nsg" {
     protocol                   = "*"
     source_port_range          = "*"
     destination_port_range     = "*"
-    source_address_prefix      = var.connectivity_vnet_address_space[0]
+    source_address_prefix      = var.connectivity_internal_vnet_address_space[0]
     destination_address_prefix = "*"
   }
 
@@ -109,7 +109,7 @@ resource "azurerm_network_security_group" "apim_nsg" {
 
   # Outbound: Allow DNS traffic
   security_rule {
-    name                       = "Allow-DNS-Traffic"
+    name                       = "Allow-DNS-Traffic-UDP"
     priority                   = 150
     direction                  = "Outbound"
     access                     = "Allow"
@@ -119,6 +119,19 @@ resource "azurerm_network_security_group" "apim_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "AzureCloud"
   }
+
+  security_rule {
+  name                       = "Allow-DNS-Traffic-TCP"
+  priority                   = 151
+  direction                  = "Outbound"
+  access                     = "Allow"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = "53"
+  source_address_prefix      = "*"
+  destination_address_prefix = "AzureCloud"
+}
+
 
 }
 

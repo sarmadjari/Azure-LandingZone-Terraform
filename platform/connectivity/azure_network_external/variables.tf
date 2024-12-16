@@ -33,35 +33,3 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-
-# Variables for Identity VNet
-variable "identity_vnet_id" {
-  description = "The ID of the Identity VNet."
-  type        = string
-}
-
-variable "identity_vnet_name" {
-  description = "The name of the Identity VNet."
-  type        = string
-}
-
-variable "identity_vnet_rg_name" {
-  description = "The resource group name of the Identity VNet."
-  type        = string
-}
-
-# Variables for Management VNet
-variable "management_vnet_id" {
-  description = "The ID of the Management VNet."
-  type        = string
-}
-
-variable "management_vnet_name" {
-  description = "The name of the Management VNet."
-  type        = string
-}
-
-variable "management_vnet_rg_name" {
-  description = "The resource group name of the Management VNet."
-  type        = string
-}
