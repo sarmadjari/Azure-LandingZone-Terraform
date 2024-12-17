@@ -130,6 +130,19 @@ variable "management_subnets" {
   }))
 }
 
+# Azure DDoS Protection Plan
+variable "ddos_protection_plan_name" {
+  description = "Name of the Azure DDoS Protection Plan"
+  type        = string
+}
+
+variable "ddos_protection_plan_enabled" {
+  description = "Enable DDoS Protection Plan"
+  type        = bool
+  default     = false
+  
+}
+
 # Extrenal Azure Firewall Variables
 variable "azure_firewall_external_name" {
   description = "The name of the Extrenal Azure Firewall"

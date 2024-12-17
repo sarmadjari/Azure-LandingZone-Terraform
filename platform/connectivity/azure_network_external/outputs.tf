@@ -1,4 +1,4 @@
-# /platform/connectivity/network/outputs.tf
+# /platform/connectivity/azure_network_external/outputs.tf
 
 output "vnet_id" {
   description = "The ID of the Connectivity Virtual Network"
@@ -33,4 +33,14 @@ output "firewall_subnet_id" {
 output "firewall_management_subnet_id" {
   description = "The ID of the Azure Firewall Management subnet"
   value       = azurerm_subnet.subnet["AzureFirewallManagementSubnet"].id
+}
+
+output "ddos_protection_plan_name" {
+  description = "The Name of the Azure DDoS Protection Plan"
+  value = azurerm_network_ddos_protection_plan.ddos.name
+}
+
+output "ddos_protection_plan_id" {
+  description = "The ID of the Azure DDoS Protection Plan"
+  value = azurerm_network_ddos_protection_plan.ddos.id
 }

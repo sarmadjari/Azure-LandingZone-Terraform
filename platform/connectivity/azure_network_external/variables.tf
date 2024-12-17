@@ -1,4 +1,4 @@
-# /platform/connectivity/network/variables.tf
+# /platform/connectivity/azure_network_external/variables.tf
 
 variable "vnet_name" {
   description = "The name of the Virtual Network (VNet)"
@@ -32,4 +32,16 @@ variable "tags" {
   description = "Tags to be applied to all resources"
   type        = map(string)
   default     = {}
+}
+
+variable "ddos_protection_plan_name" {
+  description = "Name of the Azure DDoS Protection Plan"
+  type        = string
+  
+}
+
+variable "ddos_protection_plan_enabled" {
+  description = "Enable DDoS Protection Plan"
+  type        = bool
+  default     = false
 }

@@ -25,17 +25,19 @@ module "connectivity_internal_resource_group" {
 
 # Connectivity Extrenal Network Module
 module "connectivity_external_network" {
-  source              = "./connectivity/azure_network_external"
+  source                        = "./connectivity/azure_network_external"
   providers = {
-    azurerm.connectivity = azurerm.connectivity
+    azurerm.connectivity        = azurerm.connectivity
   }
-  vnet_name           = var.connectivity_external_vnet_name
-  location            = var.location
-  resource_group_name = var.connectivity_external_resource_group_name
-  address_space       = var.connectivity_external_vnet_address_space
-  subnets             = var.connectivity_external_subnets
-  tags                = merge(var.shared_tags, { project = "connectivity" })
-  depends_on = [ module.connectivity_external_resource_group ]
+  vnet_name                     = var.connectivity_external_vnet_name
+  location                      = var.location
+  resource_group_name           = var.connectivity_external_resource_group_name
+  address_space                 = var.connectivity_external_vnet_address_space
+  subnets                       = var.connectivity_external_subnets
+  ddos_protection_plan_name     = var.ddos_protection_plan_name
+  ddos_protection_plan_enabled  = var.ddos_protection_plan_enabled
+  tags                          = merge(var.shared_tags, { project = "connectivity" })
+  depends_on                    = [ module.connectivity_external_resource_group ]
 }
 
 # Connectivity Internal Network Module
@@ -55,7 +57,7 @@ module "connectivity_internal_network" {
 
   external_vnet_name    = module.connectivity_external_network.vnet_name
   external_vnet_id      = module.connectivity_external_network.vnet_id
-  external_vnet_rg_name = var.connectivity_internal_resource_group_name
+  external_vnet_rg_name = var.connectivity_external_resource_group_name
 
   management_vnet_name    = module.management_network.vnet_name
   management_vnet_id      = module.management_network.vnet_id
@@ -65,7 +67,10 @@ module "connectivity_internal_network" {
   identity_vnet_id        = module.identity_network.vnet_id
   identity_vnet_rg_name   = var.identity_resource_group_name
 
-  depends_on = [ module.connectivity_internal_resource_group ]
+  depends_on = [
+    module.connectivity_internal_resource_group,
+    module.connectivity_external_network
+  ]
 }
 
 # Identity Network Module

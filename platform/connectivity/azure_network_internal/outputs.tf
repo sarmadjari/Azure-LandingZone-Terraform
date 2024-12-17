@@ -1,4 +1,4 @@
-# /platform/connectivity/network/outputs.tf
+# /platform/connectivity/azure_network_internal/outputs.tf
 
 output "vnet_id" {
   description = "The ID of the Connectivity Virtual Network"

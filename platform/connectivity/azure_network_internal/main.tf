@@ -1,4 +1,4 @@
-# /platform/connectivity/network/main.tf
+# /platform/connectivity/azure_network_internal/main.tf
 
 terraform {
   required_providers {

@@ -1,4 +1,4 @@
-# /platform/connectivity/network/variables.tf
+# /platform/connectivity/azure_network_internal/variables.tf
 
 variable "vnet_name" {
   description = "The name of the Virtual Network (VNet)"

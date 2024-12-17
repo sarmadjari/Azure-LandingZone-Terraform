@@ -60,6 +60,11 @@ management_subnets = [
   { name = "monitoring-subnet", address_prefix = "10.2.2.0/24" },
 ]
 
+
+# Azure DDos Protection Plan Configurations
+ddos_protection_plan_name     = "ddos-protection-plan"
+ddos_protection_plan_enabled  = true
+
 # Azure Firewall Configurations
 azure_firewall_external_name  = "external-firewall"  # Define the desired name for the External Azure Firewall here
 azure_firewall_internal_name  = "internal-firewall"  # Define the desired name for the Internal Azure Firewall here

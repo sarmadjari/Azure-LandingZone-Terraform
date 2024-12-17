@@ -1,4 +1,4 @@
-# /platform/connectivity/azure_firewall/main.tf
+# /platform/connectivity/azure_firewall_external/main.tf
 
 terraform {
   required_providers {

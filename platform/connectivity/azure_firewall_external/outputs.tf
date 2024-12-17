@@ -1,4 +1,4 @@
-# /platform/connectivity/azure_firewall/outputs.tf
+# /platform/connectivity/azure_firewall_external/outputs.tf
 
 output "azure_firewall_external_private_ip" {
   description = "Private IP address of the Azure Firewall"

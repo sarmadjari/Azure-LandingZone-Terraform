@@ -1,4 +1,4 @@
-# /platform/connectivity/azure_firewall/main.tf
+# /platform/connectivity/azure_firewall_internal/main.tf
 
 terraform {
   required_providers {
@@ -12,6 +12,7 @@ terraform {
   }
 }
 
+/*
 # Public IP for Azure Firewall
 resource "azurerm_public_ip" "azure_firewall_public_ip" {
   provider            = azurerm.connectivity
@@ -23,6 +24,7 @@ resource "azurerm_public_ip" "azure_firewall_public_ip" {
   zones               = ["1", "2", "3"]
   tags                = merge(var.shared_tags, { project = "connectivity" })
 }
+*/
 
 # Public IP for Azure Firewall Management
 resource "azurerm_public_ip" "azure_firewall_management_public_ip" {
@@ -86,7 +88,7 @@ resource "azurerm_firewall" "azure_firewall" {
   ip_configuration {
     name      = "azureFirewallConfig"
     subnet_id = var.connectivity_internal_subnet_ids["AzureFirewallSubnet"]
-    public_ip_address_id = azurerm_public_ip.azure_firewall_public_ip.id
+    # public_ip_address_id = azurerm_public_ip.azure_firewall_public_ip.id
   }
 
   management_ip_configuration {
@@ -98,7 +100,7 @@ resource "azurerm_firewall" "azure_firewall" {
   tags                   = merge(var.shared_tags, { project = "connectivity" })
   depends_on = [
     azurerm_public_ip.azure_firewall_management_public_ip,
-    azurerm_public_ip.azure_firewall_public_ip,
+    #azurerm_public_ip.azure_firewall_public_ip,
     azurerm_firewall_policy.policy,
     azurerm_route_table.firewall_management_route_table,
     azurerm_subnet_route_table_association.firewall_management_subnet

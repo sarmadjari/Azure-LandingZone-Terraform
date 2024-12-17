@@ -1,4 +1,4 @@
-# /platform/connectivity/azure_firewall/variables.tf
+# /platform/connectivity/azure_firewall_external/variables.tf
 
 variable "azure_firewall_name" {
   description = "Name of the Azure Firewall"
