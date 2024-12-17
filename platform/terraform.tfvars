@@ -74,6 +74,10 @@ azure_sku_tier                = "Premium"
 
 # Application Gateway Configurations
 appgw_name                 = "app-gateway"
+# OWASP Rule Set (CRS): Focuses on OWASP-provided rules to prevent common vulnerabilities like SQL injection, XSS, etc.
+# Default Rule Set (DRS): Microsoft's managed rule set, which incorporates OWASP CRS but also includes Microsoft-specific rules to protect Azure services better.
+waf_rule_set_type          = "Microsoft_DefaultRuleSet"   # Use DRS instead of OWASP
+waf_rule_set_version       = "2.1"                        # Latest DRS version
 
 
 # API Management Configurations

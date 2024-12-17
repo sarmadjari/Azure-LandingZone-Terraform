@@ -32,7 +32,7 @@ resource "azurerm_web_application_firewall_policy" "appgw_waf_policy" {
 
   managed_rules {
     managed_rule_set {
-      type    = "OWASP"
+      type    = var.waf_rule_set_type
       version = var.waf_rule_set_version
     }
   }

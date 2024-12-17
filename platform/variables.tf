@@ -180,11 +180,18 @@ variable "waf_mode" {
   default     = "Prevention"
 }
 
+variable "waf_rule_set_type" {
+  description = "WAF rule set type"
+  type        = string
+  default     = "Microsoft_DefaultRuleSet"  # Use DRS instead of OWASP
+}
+
 variable "waf_rule_set_version" {
   description = "WAF rule set version"
   type        = string
-  default     = "3.2"
+  default     = "2.1"
 }
+
 
 variable "ssl_certificate_path" {
   description = "Path to the PFX file for SSL certificate"
