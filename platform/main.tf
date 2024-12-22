@@ -160,8 +160,14 @@ module "connectivity_azure_application_gateway" {
   private_ip_address        = cidrhost(local.azure_application_gateway_subnet_prefix, 4) # Example: Get 4th usable IP
   waf_mode                  = var.waf_mode
   waf_rule_set_version      = var.waf_rule_set_version
+  firewall_external_private_ip = module.connectivity_external_azure_firewall.azure_firewall_external_private_ip
+  firewall_internal_private_ip = module.connectivity_internal_azure_firewall.azure_firewall_internal_private_ip
   tags                      = merge(var.shared_tags, { project = "connectivity" })
-  depends_on                = [module.connectivity_internal_network]
+  depends_on                = [
+    module.connectivity_internal_network,
+    module.connectivity_external_azure_firewall,
+    module.connectivity_internal_azure_firewall
+  ]
 }
 
 # Connectivity API Management Module

@@ -26,7 +26,7 @@ variable "azure_sku_tier" {
 }
 
 variable "connectivity_internal_subnet_ids" {
-  description = "Map of subnet names to IDs in the Connectivity VNet"
+  description = "Map of subnet names to IDs in the Connectivity Internal VNet"
   type        = map(string)
 }
 

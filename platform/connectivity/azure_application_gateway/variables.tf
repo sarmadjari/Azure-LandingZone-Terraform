@@ -90,3 +90,14 @@ variable "zones" {
   type        = list(string)
   default     = ["1", "2", "3"]
 }
+
+variable "firewall_external_private_ip" {
+  description = "Private IP address of the External Azure Firewall"
+  type        = string
+  
+}
+
+variable "firewall_internal_private_ip" {
+  description = "Private IP address of the Internal Azure Firewall"
+  type        = string
+}
