@@ -11,7 +11,7 @@ Currently the template is to deploy the **Platform**:
 - Identity
 - Management
 
-
+[![infracost](https://img.shields.io/endpoint?url=https://dashboard.api.infracost.io/shields/json/cd540923-250e-4288-b92c-f23ea45c6718/repos/f89bf2d5-6437-445c-b152-772cb2f9667e/branch/35914b04-0b0e-471e-b0e7-91a510cc893a)](https://dashboard.infracost.io/org/sarmadjari/repos/f89bf2d5-6437-445c-b152-772cb2f9667e?tab=settings)
 ## Modules
 
 ### Connectivity Network
